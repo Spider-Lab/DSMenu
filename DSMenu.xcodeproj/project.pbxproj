@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B03D3001926227F001293B9 /* DSMenu.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4B03D2FF1926227F001293B9 /* DSMenu.icns */; };
+		4B03D302192630A0001293B9 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 4B03D301192630A0001293B9 /* TODO.md */; };
+		4B0714B11927F2D1004F3128 /* DSMLoginWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0714B01927F2D1004F3128 /* DSMLoginWindowController.m */; };
+		4B3C0AF4192550650076B3A1 /* DSMConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C0AF3192550650076B3A1 /* DSMConnector.m */; };
 		4B53150A1924CA0600085143 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B5315091924CA0600085143 /* Cocoa.framework */; };
 		4B5315141924CA0600085143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B5315121924CA0600085143 /* InfoPlist.strings */; };
 		4B5315161924CA0600085143 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5315151924CA0600085143 /* main.m */; };
@@ -31,6 +35,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B03D2FF1926227F001293B9 /* DSMenu.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = DSMenu.icns; sourceTree = "<group>"; };
+		4B03D301192630A0001293B9 /* TODO.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.md; sourceTree = "<group>"; };
+		4B0714AF1927F2D1004F3128 /* DSMLoginWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMLoginWindowController.h; path = Classes/DSMLoginWindowController.h; sourceTree = "<group>"; };
+		4B0714B01927F2D1004F3128 /* DSMLoginWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMLoginWindowController.m; path = Classes/DSMLoginWindowController.m; sourceTree = "<group>"; };
+		4B3C0AF2192550650076B3A1 /* DSMConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMConnector.h; path = Classes/DSMConnector.h; sourceTree = "<group>"; };
+		4B3C0AF3192550650076B3A1 /* DSMConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMConnector.m; path = Classes/DSMConnector.m; sourceTree = "<group>"; };
+		4B3C0AF51925517B0076B3A1 /* DSMenu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = DSMenu.entitlements; sourceTree = "<group>"; };
 		4B5315061924CA0600085143 /* DSMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DSMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B5315091924CA0600085143 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4B53150C1924CA0600085143 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -76,6 +87,8 @@
 		4B5314FD1924CA0600085143 = {
 			isa = PBXGroup;
 			children = (
+				4B03D301192630A0001293B9 /* TODO.md */,
+				4B03D2FF1926227F001293B9 /* DSMenu.icns */,
 				4B53150F1924CA0600085143 /* DSMenu */,
 				4B53152D1924CA0600085143 /* DSMenuTests */,
 				4B5315081924CA0600085143 /* Frameworks */,
@@ -115,8 +128,13 @@
 		4B53150F1924CA0600085143 /* DSMenu */ = {
 			isa = PBXGroup;
 			children = (
+				4B3C0AF51925517B0076B3A1 /* DSMenu.entitlements */,
 				4B53151B1924CA0600085143 /* DSMAppDelegate.h */,
 				4B53151C1924CA0600085143 /* DSMAppDelegate.m */,
+				4B3C0AF2192550650076B3A1 /* DSMConnector.h */,
+				4B3C0AF3192550650076B3A1 /* DSMConnector.m */,
+				4B0714AF1927F2D1004F3128 /* DSMLoginWindowController.h */,
+				4B0714B01927F2D1004F3128 /* DSMLoginWindowController.m */,
 				4B53151E1924CA0600085143 /* MainMenu.xib */,
 				4B5315211924CA0600085143 /* Images.xcassets */,
 				4B5315101924CA0600085143 /* Supporting Files */,
@@ -202,6 +220,14 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Spider Lab";
 				TargetAttributes = {
+					4B5315051924CA0600085143 = {
+						DevelopmentTeam = F27CVJNWXK;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
 					4B5315261924CA0600085143 = {
 						TestTargetID = 4B5315051924CA0600085143;
 					};
@@ -231,7 +257,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B03D302192630A0001293B9 /* TODO.md in Resources */,
 				4B5315141924CA0600085143 /* InfoPlist.strings in Resources */,
+				4B03D3001926227F001293B9 /* DSMenu.icns in Resources */,
 				4B5315221924CA0600085143 /* Images.xcassets in Resources */,
 				4B53151A1924CA0600085143 /* Credits.rtf in Resources */,
 				4B5315201924CA0600085143 /* MainMenu.xib in Resources */,
@@ -253,6 +281,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B0714B11927F2D1004F3128 /* DSMLoginWindowController.m in Sources */,
+				4B3C0AF4192550650076B3A1 /* DSMConnector.m in Sources */,
 				4B5315161924CA0600085143 /* main.m in Sources */,
 				4B53151D1924CA0600085143 /* DSMAppDelegate.m in Sources */,
 			);
@@ -386,6 +416,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DSMenu/DSMenu.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DSMenu/DSMenu-Prefix.pch";
@@ -399,6 +431,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DSMenu/DSMenu.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DSMenu/DSMenu-Prefix.pch";
@@ -467,6 +501,7 @@
 				4B5315391924CA0600085143 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4B53153A1924CA0600085143 /* Build configuration list for PBXNativeTarget "DSMenuTests" */ = {
 			isa = XCConfigurationList;
@@ -475,6 +510,7 @@
 				4B53153C1924CA0600085143 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
