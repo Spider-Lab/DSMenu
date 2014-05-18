@@ -21,5 +21,6 @@
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)ok:(id)sender;
+- (IBAction)secureChanged:(id)sender;
 - (IBAction)showLoginWindow:(id)sender;
 @end

@@ -13,6 +13,7 @@
         <customObject id="-3" userLabel="Application"/>
         <customObject id="Voe-Tx-rLC" customClass="DSMAppDelegate">
             <connections>
+                <outlet property="about_link" destination="mD6-cY-ZEx" id="QXW-eB-Vzz"/>
                 <outlet property="connector" destination="ai4-p4-5VP" id="bZT-8x-wvM"/>
                 <outlet property="login_window" destination="4Wl-sX-uI3" id="eB0-v3-BeX"/>
                 <outlet property="login_window_controller" destination="8WO-js-v5b" id="E3h-BA-eOM"/>
@@ -682,14 +683,93 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="DSMenu" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
+            <rect key="contentRect" x="335" y="390" width="320" height="279"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="279"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Li9-FH-hPf" userLabel="App Icon">
+                        <rect key="frame" x="128" y="195" width="64" height="64"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="64" id="5p4-Bf-edB"/>
+                            <constraint firstAttribute="height" constant="64" id="aYe-zM-ghb"/>
+                        </constraints>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="DSMenu" id="1xV-9t-dX8"/>
+                    </imageView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1AR-3l-LMf" userLabel="DSMenu">
+                        <rect key="frame" x="18" y="160" width="284" height="19"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="280" id="Rtv-cP-AyO"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="DSMenu" id="V4F-Qc-xss">
+                            <font key="font" metaFont="systemBold" size="16"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nzu-5f-Emg" userLabel=" Version">
+                        <rect key="frame" x="18" y="134" width="284" height="14"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Version 1.0" id="k0c-9W-JcG">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mD6-cY-ZEx" userLabel="URL">
+                        <rect key="frame" x="79" y="68" width="162" height="14"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="http://spiderlab.at/dsmenu/" id="OoT-4i-uCR">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="srA-dh-67k" userLabel="Copyright">
+                        <rect key="frame" x="18" y="98" width="284" height="28"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" state="on" alignment="center" id="dje-wi-ucC">
+                            <font key="font" metaFont="smallSystem"/>
+                            <string key="title">© 2014 Spider Lab.
+All Rights Reserved.</string>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </textFieldCell>
+                    </textField>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jNo-iY-7KP" userLabel="Spider Lab Logo">
+                        <rect key="frame" x="144" y="20" width="32" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="Rs3-MH-BbR"/>
+                            <constraint firstAttribute="width" constant="32" id="oeX-Uc-ijn"/>
+                        </constraints>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="Spider Lab Logo" id="piQ-cF-j5M"/>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="jNo-iY-7KP" firstAttribute="centerX" secondItem="mD6-cY-ZEx" secondAttribute="centerX" id="7fK-bl-4F6"/>
+                    <constraint firstItem="jNo-iY-7KP" firstAttribute="top" secondItem="mD6-cY-ZEx" secondAttribute="bottom" constant="16" id="DaF-Qi-k5a"/>
+                    <constraint firstItem="Li9-FH-hPf" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" symbolic="YES" id="GYj-60-7oS"/>
+                    <constraint firstItem="1AR-3l-LMf" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="S7a-oC-Ddp"/>
+                    <constraint firstAttribute="trailing" secondItem="srA-dh-67k" secondAttribute="trailing" constant="20" symbolic="YES" id="U9Q-Xh-wAK"/>
+                    <constraint firstItem="Nzu-5f-Emg" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="Ugt-yh-1fM"/>
+                    <constraint firstAttribute="trailing" secondItem="Nzu-5f-Emg" secondAttribute="trailing" constant="20" symbolic="YES" id="X54-LW-Ral"/>
+                    <constraint firstAttribute="bottom" secondItem="jNo-iY-7KP" secondAttribute="bottom" constant="20" symbolic="YES" id="aKk-Bx-57v"/>
+                    <constraint firstItem="1AR-3l-LMf" firstAttribute="top" secondItem="Li9-FH-hPf" secondAttribute="bottom" constant="16" id="ewy-8b-kjz"/>
+                    <constraint firstItem="srA-dh-67k" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="gR7-cm-h9d"/>
+                    <constraint firstItem="mD6-cY-ZEx" firstAttribute="top" secondItem="srA-dh-67k" secondAttribute="bottom" constant="16" id="hUd-rt-1K2"/>
+                    <constraint firstItem="srA-dh-67k" firstAttribute="top" secondItem="Nzu-5f-Emg" secondAttribute="bottom" constant="8" symbolic="YES" id="hYg-Nj-ubT"/>
+                    <constraint firstItem="mD6-cY-ZEx" firstAttribute="centerX" secondItem="srA-dh-67k" secondAttribute="centerX" id="iyi-Jm-qQj"/>
+                    <constraint firstItem="Nzu-5f-Emg" firstAttribute="top" secondItem="1AR-3l-LMf" secondAttribute="bottom" constant="12" id="m9D-9K-ydL"/>
+                    <constraint firstItem="Li9-FH-hPf" firstAttribute="centerX" secondItem="1AR-3l-LMf" secondAttribute="centerX" id="rrp-fC-MV0"/>
+                    <constraint firstAttribute="trailing" secondItem="1AR-3l-LMf" secondAttribute="trailing" constant="20" symbolic="YES" id="sQr-jx-eGb"/>
+                </constraints>
             </view>
         </window>
         <window title="Login" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="4Wl-sX-uI3">
@@ -752,7 +832,7 @@
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="xRL-eg-rKr"/>
                         </constraints>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="WCL-81-j6t">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="5001" drawsBackground="YES" id="WCL-81-j6t">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -774,6 +854,9 @@
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="secureChanged:" target="8WO-js-v5b" id="Ykc-9c-JTf"/>
+                        </connections>
                     </button>
                     <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rW4-OI-VPb">
                         <rect key="frame" x="90" y="49" width="173" height="22"/>
@@ -870,6 +953,12 @@ Gw
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="xgr-RQ-zGF"/>
+                <menuItem title="About DSMenu" id="3qe-6I-Cz7">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="makeKeyAndOrderFront:" target="QvC-M9-y7g" id="sqm-Wl-d7l"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Quit DSMenu" id="Dqq-C6-gRt">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -880,4 +969,8 @@ Gw
         </menu>
         <userDefaultsController representsSharedInstance="YES" id="7SL-eb-ulO"/>
     </objects>
+    <resources>
+        <image name="DSMenu" width="512" height="512"/>
+        <image name="Spider Lab Logo" width="5" height="5"/>
+    </resources>
 </document>

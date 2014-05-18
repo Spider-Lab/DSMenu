@@ -49,8 +49,13 @@
     if (self.connector.password) {
         [self.password_field setStringValue: self.connector.password];
     }
-    
+    [self secureChanged:nil];
     [self.window makeKeyAndOrderFront:nil];
+}
+
+- (void)secureChanged:(id)sender {
+    NSString *placeholder = self.secure_checkbox.state == NSOnState ? @"5001" : @"5000";
+    [self.port_field.cell setPlaceholderString:placeholder];
 }
 
 @end
