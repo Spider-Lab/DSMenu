@@ -10,8 +10,6 @@
 
 # wanted features
 
-- save account info to user defaults
-- load account info from user defaults, show login window if not found
 - create task from Torrent file
 - don't bring to front when creating task
 - checkbox menu item to start at login

@@ -8,21 +8,16 @@
 
 #import "DSMAppDelegate.h"
 
-static NSString *DEFAULTS_HOST_KEY = @"DSMHost";
-static NSString *DEFAULTS_PORT_KEY = @"DSMPort";
-static NSString *DEFAULTS_USER_KEY = @"DSMUser";
-
 
 @implementation DSMAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    //NSString *host = [defaults objectForKey:DEFAULTS_HOST_KEY];
-    //NSInteger port = [[defaults objectForKey:DEFAULTS_PORT_KEY] integerValue];
-    
-    [self.connector connectSecure:YES host:@"infosphere.foo" port:5001 user:@"dillo" password:nil handler:^(NSError *error) {
-        // TODO: handle login failure
+    [self.connector restoreLoginHandler:^(NSError *error) {
+        if (error) {
+            // TODO: only on missing login/password?
+            [self.login_window_controller showLoginWindow:self];
+        }
     }];
         
     NSStatusBar *bar = [NSStatusBar systemStatusBar];

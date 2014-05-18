@@ -16,6 +16,29 @@ typedef enum {
     DSMConnectorLoggingOut      // logging out, going offline
 } DSMConnectorState;
 
+extern NSString *DSMConnectorErrorDomain;
+
+enum {
+    DSMConnectorNoLoginError = 1,
+    DSMConnectorNoPasswordError = 2,
+    DSMConnectorNotConnectedError = 3,
+    
+    DSMConnectorUnknownError = 100,
+    DSMConnectorInvalidParameterError = 101,
+    DSMConnectorUnknownAPIError = 102,
+    DSMConnectorUnknownMethodError = 103,
+    DSMConnectorVersionTooLowError = 104, // TODO: improve wording
+    DSMConnectorInsuficcientPermissionError = 105,
+    DSMConnectorSessionTimedOutError = 106,
+    DSMConnectorSessionInterruptedError = 107,
+    
+    DSMConnectorIncorrectLoginError = 400,
+    DSMConnectorGuestAccountDisabledError = 401,
+    DSMConnectorAccountDisabledError = 402,
+    DSMConnectorWrongPasswordError = 403,
+    DSMConnectorPermissionDeniedError = 404
+};
+
 @interface DSMConnector : NSObject
 
 @property (readonly) DSMConnectorState state;
@@ -28,9 +51,11 @@ typedef enum {
 
 - (id)init;
 
+- (void)restoreLoginHandler:(void (^)(NSError *))handler;
+
 - (void)createTaskFromFilename:(NSString *)filename data:(NSData *)data handler:(void (^)(NSError *))handler;
 - (void)createTaskFromURI:(NSString *)URI handler:(void (^)(NSError *))handler;
-- (void)connectSecure:(BOOL)secure host:(NSString *)host port:(NSUInteger)port user:(NSString *)user password:(NSString *)password handler:(void (^)(NSError *))handler;
+- (void)connectSecure:(BOOL)secure host:(NSString *)host port:(NSUInteger)port user:(NSString *)user password:(NSString *)password saveLogin:(BOOL)save_login handler:(void (^)(NSError *))handler;
 - (void)logoutImmediately:(BOOL)immediately handler:(void (^)(NSError *))handler;
 
 @end

@@ -8,26 +8,21 @@
 
 #import "DSMConnector.h"
 
+NSString *DSMConnectorErrorDomain = @"at.spiderlab.DSMenu";
+
+static NSString *DEFAULTS_HOST_KEY = @"DSMHost";
+static NSString *DEFAULTS_PORT_KEY = @"DSMPort";
+static NSString *DEFAULTS_SECURE_KEY = @"DSMSecure";
+static NSString *DEFAULTS_USER_KEY = @"DSMUser";
+
+static NSDictionary *ErrorDescription;
+
 @interface DSMConnector () {
     NSString *session_id;
     
     void (^logout_completion_handler)(NSError *);
     NSMutableSet *outstanding_requests;
 }
-
-// 100: 'Unknown error',
-// 101: 'Invalid parameter',
-// 102: 'The requested API does not exist',
-// 103: 'The requested method does not exist',
-// 104: 'The requested version does not support the functionality',
-// 105: 'The logged in session does not have permission',
-// 106: 'Session timeout',
-// 107: 'Session interrupted by duplicate login'
-// 400 No such account or incorrect password
-// 401 Guest account disabled
-// 402 Account disabled
-// 403 Wrong password
-// 404 Permission denied
 
 @end
 
@@ -39,6 +34,47 @@ static NSString *TASK_API = @"SYNO.DownloadStation.Task";
 static NSCharacterSet *QuerySaveCharacters = NULL;
 
 @implementation DSMConnector
+
+#pragma mark - Initialization
+
++ (void)initialize {
+    QuerySaveCharacters = [[NSCharacterSet characterSetWithCharactersInString:@":/?#[]@!$&’()*+,;="] invertedSet];
+    
+    ErrorDescription = @{ @(DSMConnectorNoLoginError): @"No login provided",
+                          @(DSMConnectorNoPasswordError): @"No password provided",
+                          @(DSMConnectorNotConnectedError): @"Not connected",
+                          
+                          @(DSMConnectorUnknownError): @"Unknown error",
+                          @(DSMConnectorInvalidParameterError): @"Invalid Parameter",
+                          @(DSMConnectorUnknownAPIError): @"The requested API does not exist",
+                          @(DSMConnectorUnknownMethodError): @"The requested method does not exist",
+                          @(DSMConnectorVersionTooLowError): @"The requested version does not support the functionality",
+                          @(DSMConnectorInsuficcientPermissionError): @"The logged in session does not have permission",
+                          @(DSMConnectorSessionTimedOutError): @"Session timeout",
+                          @(DSMConnectorSessionInterruptedError): @"Session interrupted by duplicate login",
+                          
+                          @(DSMConnectorIncorrectLoginError): @"No such account or incorrect password",
+                          @(DSMConnectorGuestAccountDisabledError): @"Guest account disabled",
+                          @(DSMConnectorAccountDisabledError): @"Account disabled",
+                          @(DSMConnectorWrongPasswordError): @"Wrong password",
+                          @(DSMConnectorPermissionDeniedError): @"Permission denied" };
+}
+
+
+- (id)init {
+    if ((self = [super init]) == nil)
+        return nil;
+
+    _state = DSMConnectorOffline;
+    _secure = YES;
+    outstanding_requests = [NSMutableSet set];
+    logout_completion_handler = NULL;
+    
+    return self;
+}
+
+
+#pragma mark - Properties
 
 - (NSString *)stateDescription {
     switch (self.state) {
@@ -54,42 +90,61 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     }
 }
 
-- (id)init {
-    if ((self = [super init]) == nil)
-        return nil;
 
-    if (QuerySaveCharacters == NULL) {
-        QuerySaveCharacters = [[NSCharacterSet characterSetWithCharactersInString:@":/?#[]@!$&’()*+,;="] invertedSet];
+- (void)setState:(DSMConnectorState)state {
+    if (state == _state) {
+        return;
     }
     
-    _state = DSMConnectorOffline;
-    outstanding_requests = [NSMutableSet set];
-    logout_completion_handler = NULL;
-    
-    return self;
+    [self willChangeValueForKey:@"stateDescription"];
+    [self willChangeValueForKey:@"state"];
+    _state = state;
+    [self didChangeValueForKey:@"state"];
+    [self didChangeValueForKey:@"stateDescription"];
 }
 
 
-- (void)connectSecure:(BOOL)secure host:(NSString *)host port:(NSUInteger)port user:(NSString *)user password:(NSString *)password handler:(void (^)(NSError *))handler {
-    if (!host || !user) {
-        // TODO: include human readable error string
-        return handler([NSError errorWithDomain:@"DSMConnector" code:1 userInfo:nil]);
+#pragma mark - Login
+
+- (void)restoreLoginHandler:(void (^)(NSError *))handler {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *secure_obj = [defaults objectForKey:DEFAULTS_SECURE_KEY];
+    NSString *host = [defaults objectForKey:DEFAULTS_HOST_KEY];
+    NSString *port_obj = [defaults objectForKey:DEFAULTS_PORT_KEY];
+    NSString *user = [defaults objectForKey:DEFAULTS_USER_KEY];
+    
+    if (secure_obj == nil || host == nil || port_obj == nil || user == nil) {
+        return handler([self errorWithCode:DSMConnectorNoLoginError message:nil]);
     }
+    
+    NSInteger port = [port_obj integerValue];
+    BOOL secure = [secure_obj boolValue];
+    
+    if (port < 0 || port > 0xffff) {
+        return handler([self errorWithCode:DSMConnectorInvalidParameterError message:[NSString stringWithFormat:@"invalid port %@", port_obj]]);
+    }
+
+    NSString *password = [self getPasswordforSecure:secure Host:host port:port user:user];
+    if (password == nil) {
+        return handler([self errorWithCode:DSMConnectorNoPasswordError message:nil]);
+    }
+    
+    [self connectSecure:secure host:host port:(NSUInteger)port user:user password:password saveLogin:NO handler:handler];
+}
+
+- (void)connectSecure:(BOOL)secure host:(NSString *)host port:(NSUInteger)port user:(NSString *)user password:(NSString *)password saveLogin:(BOOL)save_login handler:(void (^)(NSError *))handler {
+    if (host == nil || user == nil || password == nil) {
+        return handler([self errorWithCode:DSMConnectorInvalidParameterError message:nil]);
+    }
+    
     if (port == 0) {
         port = secure ? 5001 : 5000;
     }
+    
     if (port > 0xffff) {
-        // TODO: include human readable error string
-        return handler([NSError errorWithDomain:@"DSMConnector" code:1 userInfo:nil]);
+        return handler([self errorWithCode:DSMConnectorInvalidParameterError message:[NSString stringWithFormat:@"invalid port %lu", port]]);
     }
-    if (!password) {
-        password = [self getPasswordforHost:host port:port user:user];
-        if (!password) {
-            // TODO: include human readable error string
-            return handler([NSError errorWithDomain:@"DSMConnector" code:1 userInfo:nil]);
-        }
-    }
-
 
     BOOL changed = NO;
     
@@ -128,28 +183,37 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         return handler(nil);
     }
     
+    void (^completion_handler)(NSError *) = ^void(NSError *error) {
+        if (error == nil && save_login) {
+            [self saveLogin];
+        }
+        return handler(error);
+    };
+    
     if (self.state != DSMConnectorOffline) {
         [self setState:DSMConnectorReconnecting];
         [self logoutImmediately:NO handler:^(NSError *error) {
             if (error) {
                 return handler(error);
             }
-            [self loginHandler:handler];
+            [self loginHandler:completion_handler];
         }];
     }
     else {
-        [self loginHandler:handler];
+        [self loginHandler:completion_handler];
     }
 }
 
 
-- (NSString *)getPasswordforHost:(NSString *)host port:(NSUInteger)port user:(NSString *)user {
+- (NSString *)getPasswordforSecure:(BOOL)secure Host:(NSString *)host port:(NSUInteger)port user:(NSString *)user {
     const char *c_host = [host UTF8String];
     const char *c_user = [user UTF8String];
     void *c_password;
     UInt32 password_length;
     
-    OSStatus status = SecKeychainFindInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", port, kSecProtocolTypeHTTPS, kSecAuthenticationTypeAny, &password_length, &c_password, NULL);
+    int protocol = secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
+
+    OSStatus status = SecKeychainFindInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", port, protocol, kSecAuthenticationTypeAny, &password_length, &c_password, NULL);
     
     if (status != 0)
         return nil;
@@ -161,6 +225,29 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     return password;
 }
 
+- (BOOL)saveLogin {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    [defaults setObject:@(self.secure) forKey:DEFAULTS_SECURE_KEY];
+    [defaults setObject:self.host forKey:DEFAULTS_HOST_KEY];
+    [defaults setObject:@(self.port) forKey:DEFAULTS_PORT_KEY];
+    [defaults setObject:self.user forKey:DEFAULTS_USER_KEY];
+    
+    return [self savePassword];
+}
+
+- (BOOL)savePassword {
+    const char *c_host = [self.host UTF8String];
+    const char *c_user = [self.user UTF8String];
+    const char *c_password = [self.user UTF8String];
+    
+    int protocol = self.secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
+    OSStatus status = SecKeychainAddInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", self.port, protocol, kSecAuthenticationTypeDefault, (UInt32)strlen(c_password), c_password, NULL);
+    
+    return status == 0;
+}
+
+#pragma mark - Protocol Helpers
 
 - (NSString *)baseURL {
     return [NSString stringWithFormat:@"%s://%@:%lu/webapi/", self.secure ? "https" : "http", self.host, (unsigned long)self.port];
@@ -198,6 +285,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     NSRange r = { 0, [url_string length] };
     NSString *url_log = [hide_password stringByReplacingMatchesInString:url_string options:0 range:r withTemplate:@"passwd=XXXX"];
     NSLog(@"sending request %@", url_log);
+    [self beginRequest:request];
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *body, NSError *error) {
@@ -223,6 +311,12 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
                            }];
 }
 
+
+- (void)beginRequest:(NSURLRequest *)request {
+    [outstanding_requests addObject:request];
+}
+
+
 - (void)completedRequest:(NSURLRequest *)request {
     [outstanding_requests removeObject:request];
     
@@ -232,17 +326,8 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     }
 }
 
-- (void)setState:(DSMConnectorState)state {
-    if (state == _state) {
-        return;
-    }
-    
-    [self willChangeValueForKey:@"stateDescription"];
-    [self willChangeValueForKey:@"state"];
-    _state = state;
-    [self didChangeValueForKey:@"state"];
-    [self didChangeValueForKey:@"stateDescription"];
-}
+
+#pragma mark - Request Methods
 
 - (void)loginHandler:(void (^)(NSError *))handler {
     if (self.state != DSMConnectorReconnecting) {
@@ -293,8 +378,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     switch (self.state) {
         case DSMConnectorOffline:
         case DSMConnectorLoggingOut:
-            // TODO: proper error: not connected
-            return handler([NSError errorWithDomain:@"DSMConnector" code:1 userInfo:nil]);
+            return handler([self errorWithCode:DSMConnectorNotConnectedError message:nil]);
             
         case DSMConnectorLoggingIn:
         case DSMConnectorReconnecting:
@@ -317,8 +401,17 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     handler(nil);
 }
 
-//@"http://infosphere.foo:5000/webapi/DownloadStation/task.cgi?api=SYNO.DownloadStation.Task&version=1&method=list&_sid=%@";
 
-
+- (NSError *)errorWithCode:(NSInteger)code message:(NSString *)message {
+    NSString *description = ErrorDescription[@(code)];
+    if (description == nil) {
+        description = [NSString stringWithFormat:@"Unknown error %ld", code];
+    }
+    description = NSLocalizedString(description, description);
+    if (message) {
+        description = [description stringByAppendingFormat:@": %@", NSLocalizedString(message, message)];
+    }
+    return [NSError errorWithDomain:DSMConnectorErrorDomain code:code userInfo:@{ NSLocalizedDescriptionKey: description }];
+}
 
 @end
