@@ -253,6 +253,9 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     return [NSString stringWithFormat:@"%s://%@:%lu/webapi/", self.secure ? "https" : "http", self.host, (unsigned long)self.port];
 }
 
+- (NSString *)URLescape:(NSString *)string {
+    return [string stringByAddingPercentEncodingWithAllowedCharacters:QuerySaveCharacters];
+}
 
 - (NSString *)encodeParameters:(NSDictionary *)parameters {
     NSMutableString *query = [NSMutableString string];
@@ -268,23 +271,80 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     return query;
 }
 
+- (NSData *)encodePostWithBoundary:(NSString *)boundary parameters:(NSDictionary *)parameters files:(NSArray *)files {
+    NSMutableData *body = [NSMutableData data];
+    
+    
+    [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"%@\"\r\n\r\n%@\r\n", boundary, [key stringByAddingPercentEncodingWithAllowedCharacters:QuerySaveCharacters], [value stringByAddingPercentEncodingWithAllowedCharacters:QuerySaveCharacters]] dataUsingEncoding:NSUTF8StringEncoding]];
+    }];
+
+    if (session_id != NULL) {
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"_sid\"\r\n\r\n%@\r\n", boundary, [session_id stringByAddingPercentEncodingWithAllowedCharacters:QuerySaveCharacters]] dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+
+    [files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSDictionary *file = obj;
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\nContent-Disposition: fomr-data; name=\"%@\"; filename=\"%@\"\nContent-Type: %@\r\n\r\n", boundary, [self URLescape:[file objectForKey:@"parameter"] ], [self URLescape:[file objectForKey:@"filename"]], [file objectForKey:@"content_type"]] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[file objectForKey:@"data"]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    }];
+    
+    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    return body;
+}
+
+
+- (NSString*)MIMEBoundary
+{
+    static NSString* MIMEBoundary = nil;
+    
+    if (MIMEBoundary == nil) {
+        MIMEBoundary = [[NSString alloc] initWithFormat:@"------DSMenu_%@", [[NSProcessInfo processInfo] globallyUniqueString]];
+    }
+    
+    return MIMEBoundary;
+}
+
+- (void)sendRequestToEndpoint:(NSString *)endpoint withParameters:(NSDictionary *)parameters files:(NSArray *)files completionHandler:(void (^)(NSURLResponse *, NSDictionary *, NSError *))handler {
+    NSString *url_string = [[self baseURL] stringByAppendingString:endpoint];
+    NSURL *url = [[NSURL alloc] initWithString:url_string];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    NSString *boundary = [self MIMEBoundary];
+    NSData *body = [self encodePostWithBoundary:boundary parameters:parameters files:files];
+    
+    request.HTTPMethod = @"POST";
+    [request setValue:[@"multipart/form-data; boundary=" stringByAppendingString:boundary] forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[body length]] forHTTPHeaderField:@"Content-Length"];
+    request.HTTPBody = body;
+    
+    [self sendRequest:request completionHandler:handler];
+}
+
 
 - (void)sendRequestToEndpoint:(NSString *)endpoint withParameters:(NSDictionary *)parameters completionHandler:(void (^)(NSURLResponse *, NSDictionary *, NSError *))handler {
-    static NSRegularExpression *hide_password = NULL;
-    if (hide_password == NULL) {
-        hide_password = [NSRegularExpression regularExpressionWithPattern:@"passwd=[^&]*" options:0 error:NULL];
-    }
 
     NSString *url_string = [NSString stringWithFormat:@"%@%@?%@", [self baseURL], endpoint, [self encodeParameters:parameters]];
     NSURL *url = [[NSURL alloc] initWithString:url_string];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    
+ 
+    [self sendRequest:request completionHandler:handler];
+}
+
+
+- (void)sendRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLResponse *, NSDictionary *, NSError *))handler {
+    static NSRegularExpression *hide_password = NULL;
     if (hide_password == NULL) {
         hide_password = [NSRegularExpression regularExpressionWithPattern:@"passwd=[^&]*" options:0 error:NULL];
     }
+    
+    NSString *url_string = [[request URL] absoluteString];
     NSRange r = { 0, [url_string length] };
     NSString *url_log = [hide_password stringByReplacingMatchesInString:url_string options:0 range:r withTemplate:@"passwd=XXXX"];
     NSLog(@"sending request %@", url_log);
+    
     [self beginRequest:request];
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]
@@ -298,11 +358,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
                                if (result) {
                                    if ([result[@"success"] boolValue] != YES) {
                                        if ([result[@"success"] boolValue] != YES) {
-                                           error = [NSError errorWithDomain:@"SynologyWebAPI"
-                                                                       code:[result[@"error"][@"code"] integerValue]
-                                                                   userInfo:NULL];
-                                           // TODO: human readable error (in userInfo?)
-                                           NSLog(@"Can't log in: %d", [result[@"error"][@"code"] intValue]);
+                                           error = [self errorWithCode:[result[@"error"][@"code"] integerValue] message:nil];
                                            result = nil;
                                        }
                                    }
@@ -397,8 +453,27 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 
 
 - (void)createTaskFromFilename:(NSString *)filename data:(NSData *)data handler:(void (^)(NSError *))handler {
-    // TODO: implement
-    handler(nil);
+    switch (self.state) {
+        case DSMConnectorOffline:
+        case DSMConnectorLoggingOut:
+            return handler([self errorWithCode:DSMConnectorNotConnectedError message:nil]);
+            
+        case DSMConnectorLoggingIn:
+        case DSMConnectorReconnecting:
+            // TODO: remember task
+            return;
+            
+        case DSMConnectorConnected:
+            [self sendRequestToEndpoint:TASK_ENDPOINT
+                         withParameters:@{@"api": TASK_API, @"method": @"create", @"version": @"1" }
+                                  files:@[@{@"parameter":@"file",
+                                            @"content_type": @"application/octet-stream",
+                                            @"filename": filename,
+                                            @"data": data }]
+                      completionHandler:^(NSURLResponse *response, NSDictionary *result, NSError *error) {
+                          handler(error);
+                      }];
+    }
 }
 
 

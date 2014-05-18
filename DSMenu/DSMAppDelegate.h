@@ -11,7 +11,7 @@
 #import "DSMConnector.h"
 #import "DSMLoginWindowController.h"
 
-@interface DSMAppDelegate : NSObject <NSApplicationDelegate>
+@interface DSMAppDelegate : NSObject <NSApplicationDelegate,NSUserNotificationCenterDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSMenu *status_bar_menu;

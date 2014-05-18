@@ -20,6 +20,8 @@
         }
     }];
     
+    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+    
     NSFont *font = self.about_link.font;
     [self.about_link setAllowsEditingTextAttributes: YES];
     [self.about_link setSelectable: YES];
@@ -101,4 +103,11 @@
 - (void)quit:(id)sender {
     [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
 }
+
+#pragma mark - NSUserNotificationCenterDelegate methods
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification {
+    return YES;
+}
+
 @end

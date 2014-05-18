@@ -2,7 +2,6 @@
 
 ## bugs
 
-- display notification even if in foreground
 - when opened for url, wait for login before creating task
 - bring login window to front
 - better name for Login menu item when logged in
@@ -12,8 +11,6 @@
 ## features
 
 - handle login errors
-- create task from Torrent file
-- don't bring to front when creating task
 - checkbox menu item to start at login
 
 
