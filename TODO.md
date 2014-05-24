@@ -3,9 +3,8 @@
 ## bugs
 
 - when opened for url, wait for login before creating task
-- bring login window to front
+- bring login/about window to front
 - better name for Login menu item when logged in
-- accept wonky certificate
 - fix association with .torrent files
 
 ## features
@@ -20,6 +19,7 @@
 
 - don't re-login if nothing changed
 - display correct cursor in about link
+- don't grab focus when opening URL/file
 
 ## features
 
@@ -28,6 +28,7 @@
 
 ## bugs
 
+- improve certificate acceptance (only synology or self signed)
 - only allow digits in port field (login window)
 
 ## features

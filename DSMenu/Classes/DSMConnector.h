@@ -22,6 +22,7 @@ enum {
     DSMConnectorNoLoginError = 1,
     DSMConnectorNoPasswordError = 2,
     DSMConnectorNotConnectedError = 3,
+    DSMConnectorInvalidReplyError = 4,
     
     DSMConnectorUnknownError = 100,
     DSMConnectorInvalidParameterError = 101,
@@ -39,7 +40,7 @@ enum {
     DSMConnectorPermissionDeniedError = 404
 };
 
-@interface DSMConnector : NSObject
+@interface DSMConnector : NSObject<NSURLConnectionDelegate,NSURLConnectionDataDelegate>
 
 @property (readonly) DSMConnectorState state;
 @property (readonly, retain) NSString *stateDescription;

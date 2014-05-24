@@ -17,6 +17,17 @@ static NSString *DEFAULTS_USER_KEY = @"DSMUser";
 
 static NSDictionary *ErrorDescription;
 
+@interface DSMConnectorRequest : NSObject<NSURLConnectionDelegate,NSURLConnectionDataDelegate> {
+    NSURLRequest *request;
+    NSURLResponse *response;
+    NSMutableData *body;
+    void (^completion_handler)(NSURLRequest *, NSURLResponse *, NSData *, NSError *);
+}
+
+- initWithURLRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest *, NSURLResponse *, NSData *, NSError *))completionHandler;
+
+@end
+
 @interface DSMConnector () {
     NSString *session_id;
     
@@ -43,6 +54,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     ErrorDescription = @{ @(DSMConnectorNoLoginError): @"No login provided",
                           @(DSMConnectorNoPasswordError): @"No password provided",
                           @(DSMConnectorNotConnectedError): @"Not connected",
+                          @(DSMConnectorInvalidReplyError): @"The server sent an invalid reply",
                           
                           @(DSMConnectorUnknownError): @"Unknown error",
                           @(DSMConnectorInvalidParameterError): @"Invalid Parameter",
@@ -307,7 +319,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     return MIMEBoundary;
 }
 
-- (void)sendRequestToEndpoint:(NSString *)endpoint withParameters:(NSDictionary *)parameters files:(NSArray *)files completionHandler:(void (^)(NSURLResponse *, NSDictionary *, NSError *))handler {
+- (void)sendRequestToEndpoint:(NSString *)endpoint withParameters:(NSDictionary *)parameters files:(NSArray *)files completionHandler:(void (^)(NSDictionary *, NSError *))handler {
     NSString *url_string = [[self baseURL] stringByAppendingString:endpoint];
     NSURL *url = [[NSURL alloc] initWithString:url_string];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -324,7 +336,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 }
 
 
-- (void)sendRequestToEndpoint:(NSString *)endpoint withParameters:(NSDictionary *)parameters completionHandler:(void (^)(NSURLResponse *, NSDictionary *, NSError *))handler {
+- (void)sendRequestToEndpoint:(NSString *)endpoint withParameters:(NSDictionary *)parameters completionHandler:(void (^)(NSDictionary *, NSError *))handler {
 
     NSString *url_string = [NSString stringWithFormat:@"%@%@?%@", [self baseURL], endpoint, [self encodeParameters:parameters]];
     NSURL *url = [[NSURL alloc] initWithString:url_string];
@@ -334,7 +346,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 }
 
 
-- (void)sendRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLResponse *, NSDictionary *, NSError *))handler {
+- (void)sendRequest:(NSURLRequest *)request completionHandler:(void (^)(NSDictionary *, NSError *))handler {
     static NSRegularExpression *hide_password = NULL;
     if (hide_password == NULL) {
         hide_password = [NSRegularExpression regularExpressionWithPattern:@"passwd=[^&]*" options:0 error:NULL];
@@ -345,26 +357,34 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     NSString *url_log = [hide_password stringByReplacingMatchesInString:url_string options:0 range:r withTemplate:@"passwd=XXXX"];
     NSLog(@"sending request %@", url_log);
     
+
     [self beginRequest:request];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *body, NSError *error) {
-                               [self completedRequest:request];
-                               NSDictionary *result = nil;
-                               if (body) {
-                                   NSLog(@"got result: %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
-                                   result = [NSJSONSerialization JSONObjectWithData:body options:0 error:&error];
-                               }
-                               if (result) {
-                                   if ([result[@"success"] boolValue] != YES) {
-                                       if ([result[@"success"] boolValue] != YES) {
-                                           error = [self errorWithCode:[result[@"error"][@"code"] integerValue] message:nil];
-                                           result = nil;
-                                       }
-                                   }
-                               }
-                               handler(response, result, error);
-                           }];
+    (void)[[DSMConnectorRequest alloc] initWithURLRequest:request completionHandler:^(NSURLRequest *request, NSURLResponse *response, NSData *body, NSError *error) {
+        [self completedRequest:request];
+        if (error) {
+            NSLog(@"got error: %@", error);
+            return handler(nil, error);
+        }
+        if (!body) {
+            NSLog(@"got empty result");
+            return handler(nil, [self errorWithCode:DSMConnectorInvalidReplyError message:nil]);
+        }
+        
+        NSLog(@"got result: %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+        NSDictionary *result = nil;
+        result = [NSJSONSerialization JSONObjectWithData:body options:0 error:&error];
+        if (!result) {
+            return handler(nil, [self errorWithCode:DSMConnectorInvalidReplyError message:nil]);
+        }
+        
+        if ([result[@"success"] boolValue] != YES) {
+            if ([result[@"success"] boolValue] != YES) {
+                error = [self errorWithCode:[result[@"error"][@"code"] integerValue] message:nil];
+                result = nil;
+            }
+        }
+        handler(result, error);
+        }];
 }
 
 
@@ -396,7 +416,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
                                    @"passwd": self.password,
                                    @"session": @"DSMenu",
                                    @"format": @"sid" }
-              completionHandler:^(NSURLResponse *response, NSDictionary *result, NSError *error) {
+              completionHandler:^(NSDictionary *result, NSError *error) {
                   if (error) {
                       [self setState:DSMConnectorOffline];
                       NSLog(@"Can't log in: %@", error);
@@ -422,7 +442,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     [self sendRequestToEndpoint:AUTH_ENDPOINT
                  withParameters:@{ @"api": AUTH_API, @"method": @"logout", @"version": @"1",
                                    @"session": @"DSMenu" }
-              completionHandler:^(NSURLResponse *response, NSDictionary *result, NSError *error) {
+              completionHandler:^(NSDictionary *result, NSError *error) {
                   // If logout fails, assume connection is unusable and consider disconnected.
                   [self setState:(self.state == DSMConnectorReconnecting ? DSMConnectorLoggingIn : DSMConnectorOffline)];
                   return handler(error);
@@ -445,7 +465,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
             [self sendRequestToEndpoint:TASK_ENDPOINT
                          withParameters:@{@"api": TASK_API, @"method": @"create", @"version": @"1",
                                           @"uri": URI }
-                      completionHandler:^(NSURLResponse *response, NSDictionary *result, NSError *error) {
+                      completionHandler:^(NSDictionary *result, NSError *error) {
                           handler(error);
                       }];
     }
@@ -470,7 +490,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
                                             @"content_type": @"application/octet-stream",
                                             @"filename": filename,
                                             @"data": data }]
-                      completionHandler:^(NSURLResponse *response, NSDictionary *result, NSError *error) {
+                      completionHandler:^(NSDictionary *result, NSError *error) {
                           handler(error);
                       }];
     }
@@ -487,6 +507,65 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         description = [description stringByAppendingFormat:@": %@", NSLocalizedString(message, message)];
     }
     return [NSError errorWithDomain:DSMConnectorErrorDomain code:code userInfo:@{ NSLocalizedDescriptionKey: description }];
+}
+
+@end
+
+#pragma mark -
+
+@implementation DSMConnectorRequest
+
+- (id)initWithURLRequest:(NSURLRequest *)_request completionHandler:(void (^)(NSURLRequest *, NSURLResponse *, NSData *, NSError *))completionHandler {
+    if ((self = [super init]) == nil) {
+        return nil;
+    }
+    
+    request = _request;
+    completion_handler = completionHandler;
+    response = nil;
+    body = nil;
+    
+    (void)[[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
+    
+    return self;
+}
+
+
+- (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+    NSLog(@"validating certificate: error [%@] failureResponse [%@] proposedCredential [%@] protectionSpace [%@]",
+          [challenge error], [challenge failureResponse], [challenge proposedCredential], [challenge protectionSpace]);
+    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+		// we only trust our own domain
+		if ([challenge.protectionSpace.host isEqualToString:[[request URL] host]]) {
+			NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+			[challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
+		}
+	}
+    
+	[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)_response {
+    response = _response;
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    if (body == nil) {
+        body = [data mutableCopy];
+    }
+    else {
+        [body appendData:data];
+    }
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    return completion_handler(request, response, body, nil);
+}
+
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    return completion_handler(request, response, body, error);
 }
 
 @end

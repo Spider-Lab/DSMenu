@@ -13,13 +13,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [self.connector restoreLoginHandler:^(NSError *error) {
-        if (error) {
-            // TODO: only on missing login/password?
-            [self.login_window_controller showLoginWindow:self];
-        }
-    }];
-    
     [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
     
     NSFont *font = self.about_link.font;
@@ -36,6 +29,17 @@
     [self.status_bar_item setImage:[NSImage imageNamed:@"Status Bar Icon"]];
     [self.status_bar_item setHighlightMode:YES];
     [self.status_bar_item setMenu:self.status_bar_menu];
+    
+    [self.connector restoreLoginHandler:^(NSError *error) {
+        if (error) {
+            if ([error.domain isEqualToString:DSMConnectorErrorDomain] && (error.code == DSMConnectorNoLoginError || error.code == DSMConnectorNoPasswordError)) {
+                [self.login_window_controller showLoginWindow:self];
+            }
+            else {
+                [self sendNotificationWithTitle:@"Can't log in" informativeText:[error localizedDescription]];
+            }
+        }
+    }];
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
@@ -47,21 +51,16 @@
     NSString *url = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
     NSLog(@"got URL: %@", url);
     [self.connector createTaskFromURI:url handler:^(NSError *error) {
-        NSUserNotification *notification = [[NSUserNotification alloc] init];
         if (error) {
             NSLog(@"can't create downlaod taks from URL %@: %@", url, error);
 
-            notification.title = @"Can't Create Task";
-            notification.informativeText = [error localizedDescription];
+            [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
         }
         else {
             NSLog(@"created download task from URL %@", url);
-            
-            notification.title = @"Created Task for URL";
-            notification.informativeText = url;
+
+            [self sendNotificationWithTitle:@"Created task" informativeText:url];
         }
-        notification.soundName = NSUserNotificationDefaultSoundName;
-        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
     }];
 }
 
@@ -76,19 +75,14 @@
     }
     
     [self.connector createTaskFromFilename:[filename lastPathComponent] data:data handler:^(NSError *error) {
-        NSUserNotification *notification = [[NSUserNotification alloc] init];
         if (error) {
             NSLog(@"can't create downlaod taks from file %@: %@", filename, error);
-            notification.title = @"Can't Create Task";
-            notification.informativeText = [error localizedDescription];
+            [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
         }
         else {
             NSLog(@"created download task from file %@", filename);
-            notification.title = @"Created Task for File";
-            notification.informativeText = [filename lastPathComponent];
+            [self sendNotificationWithTitle:@"Created task" informativeText:[filename lastPathComponent]];
         }
-        notification.soundName = NSUserNotificationDefaultSoundName;
-        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
     }];
     
     return YES;
@@ -97,6 +91,15 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     [self.connector logoutImmediately:YES handler:^(NSError *error) { }];
+}
+
+
+- (void)sendNotificationWithTitle:(NSString *)title informativeText:(NSString *)informativeText {
+    NSUserNotification *notification = [[NSUserNotification alloc] init];
+    notification.title = title;
+    notification.informativeText = informativeText;
+    notification.soundName = NSUserNotificationDefaultSoundName;
+    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
 
 
