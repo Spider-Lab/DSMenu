@@ -10,6 +10,7 @@
 		4B03D3001926227F001293B9 /* DSMenu.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4B03D2FF1926227F001293B9 /* DSMenu.icns */; };
 		4B03D302192630A0001293B9 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 4B03D301192630A0001293B9 /* TODO.md */; };
 		4B0714B11927F2D1004F3128 /* DSMLoginWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0714B01927F2D1004F3128 /* DSMLoginWindowController.m */; };
+		4B2C28641931EC0A00BF9974 /* DSMOpenURLWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2C28621931EC0A00BF9974 /* DSMOpenURLWindowController.m */; };
 		4B3C0AF4192550650076B3A1 /* DSMConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C0AF3192550650076B3A1 /* DSMConnector.m */; };
 		4B53150A1924CA0600085143 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B5315091924CA0600085143 /* Cocoa.framework */; };
 		4B5315141924CA0600085143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B5315121924CA0600085143 /* InfoPlist.strings */; };
@@ -39,6 +40,8 @@
 		4B03D301192630A0001293B9 /* TODO.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.md; sourceTree = "<group>"; };
 		4B0714AF1927F2D1004F3128 /* DSMLoginWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMLoginWindowController.h; path = Classes/DSMLoginWindowController.h; sourceTree = "<group>"; };
 		4B0714B01927F2D1004F3128 /* DSMLoginWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMLoginWindowController.m; path = Classes/DSMLoginWindowController.m; sourceTree = "<group>"; };
+		4B2C28611931EC0A00BF9974 /* DSMOpenURLWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMOpenURLWindowController.h; path = Classes/DSMOpenURLWindowController.h; sourceTree = "<group>"; };
+		4B2C28621931EC0A00BF9974 /* DSMOpenURLWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMOpenURLWindowController.m; path = Classes/DSMOpenURLWindowController.m; sourceTree = "<group>"; };
 		4B3C0AF2192550650076B3A1 /* DSMConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMConnector.h; path = Classes/DSMConnector.h; sourceTree = "<group>"; };
 		4B3C0AF3192550650076B3A1 /* DSMConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMConnector.m; path = Classes/DSMConnector.m; sourceTree = "<group>"; };
 		4B3C0AF51925517B0076B3A1 /* DSMenu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = DSMenu.entitlements; sourceTree = "<group>"; };
@@ -128,13 +131,14 @@
 		4B53150F1924CA0600085143 /* DSMenu */ = {
 			isa = PBXGroup;
 			children = (
-				4B3C0AF51925517B0076B3A1 /* DSMenu.entitlements */,
 				4B53151B1924CA0600085143 /* DSMAppDelegate.h */,
 				4B53151C1924CA0600085143 /* DSMAppDelegate.m */,
 				4B3C0AF2192550650076B3A1 /* DSMConnector.h */,
 				4B3C0AF3192550650076B3A1 /* DSMConnector.m */,
 				4B0714AF1927F2D1004F3128 /* DSMLoginWindowController.h */,
 				4B0714B01927F2D1004F3128 /* DSMLoginWindowController.m */,
+				4B2C28611931EC0A00BF9974 /* DSMOpenURLWindowController.h */,
+				4B2C28621931EC0A00BF9974 /* DSMOpenURLWindowController.m */,
 				4B53151E1924CA0600085143 /* MainMenu.xib */,
 				4B5315211924CA0600085143 /* Images.xcassets */,
 				4B5315101924CA0600085143 /* Supporting Files */,
@@ -145,6 +149,7 @@
 		4B5315101924CA0600085143 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4B3C0AF51925517B0076B3A1 /* DSMenu.entitlements */,
 				4B5315111924CA0600085143 /* DSMenu-Info.plist */,
 				4B5315121924CA0600085143 /* InfoPlist.strings */,
 				4B5315151924CA0600085143 /* main.m */,
@@ -283,6 +288,7 @@
 			files = (
 				4B0714B11927F2D1004F3128 /* DSMLoginWindowController.m in Sources */,
 				4B3C0AF4192550650076B3A1 /* DSMConnector.m in Sources */,
+				4B2C28641931EC0A00BF9974 /* DSMOpenURLWindowController.m in Sources */,
 				4B5315161924CA0600085143 /* main.m in Sources */,
 				4B53151D1924CA0600085143 /* DSMAppDelegate.m in Sources */,
 			);

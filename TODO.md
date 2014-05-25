@@ -3,14 +3,13 @@
 ## bugs
 
 - when opened for url, wait for login before creating task
-- bring login/about window to front
-- better name for Login menu item when logged in
+- bring windows to front
 - fix association with .torrent files
+- don't grab focus when opening URL/file
 
 ## features
 
 - handle login errors
-- checkbox menu item to start at login
 
 
 # important
@@ -19,7 +18,7 @@
 
 - don't re-login if nothing changed
 - display correct cursor in about link
-- don't grab focus when opening URL/file
+- better name for Connect menu item when logged in
 
 ## features
 
@@ -33,5 +32,6 @@
 
 ## features
 
+- checkbox menu item to start at login
 - list downloads
 - edit downloads

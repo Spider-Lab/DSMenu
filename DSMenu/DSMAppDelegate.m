@@ -48,8 +48,12 @@
 }
 
 - (void)handleGetURLEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
-    NSString *url = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
+    [self openURL:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
+}
+
+- (void)openURL:(NSString *)url {
     NSLog(@"got URL: %@", url);
+    [NSApp deactivate];
     [self.connector createTaskFromURI:url handler:^(NSError *error) {
         if (error) {
             NSLog(@"can't create downlaod taks from URL %@: %@", url, error);
@@ -62,30 +66,13 @@
             [self sendNotificationWithTitle:@"Created task" informativeText:url];
         }
     }];
+    
 }
 
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename {
-    NSLog(@"opening file %@", filename);
-    NSData *data = [[NSFileManager defaultManager] contentsAtPath:filename];
-    
-    if (data == nil) {
-        NSLog(@"can't read file %@", filename);
-        return NO;
-    }
-    
-    [self.connector createTaskFromFilename:[filename lastPathComponent] data:data handler:^(NSError *error) {
-        if (error) {
-            NSLog(@"can't create downlaod taks from file %@: %@", filename, error);
-            [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
-        }
-        else {
-            NSLog(@"created download task from file %@", filename);
-            [self sendNotificationWithTitle:@"Created task" informativeText:[filename lastPathComponent]];
-        }
-    }];
-    
-    return YES;
+    [NSApp deactivate];
+    return [self openFile:filename];
 }
 
 
@@ -102,9 +89,53 @@
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
 
+- (BOOL)openFile:(NSString *)filename {
+    NSLog(@"opening file %@", filename);
+    
+    NSData *data = [[NSFileManager defaultManager] contentsAtPath:filename];
+    
+    if (data == nil) {
+        NSLog(@"can't read file %@", filename);
+        // TODO: send error notification
+        return NO;
+    }
+    
+    [self.connector createTaskFromFilename:[filename lastPathComponent] data:data handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"can't create downlaod taks from file %@: %@", filename, error);
+            [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
+        }
+        else {
+            NSLog(@"created download task from file %@", filename);
+            [self sendNotificationWithTitle:@"Created task" informativeText:[filename lastPathComponent]];
+        }
+    }];
+    
+    return YES;
+    
+}
 
 - (void)quit:(id)sender {
     [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
+}
+
+- (void)openFiles:(id)sender {
+    NSOpenPanel* open_panel = [NSOpenPanel openPanel];
+    
+    [open_panel setPrompt:@"Create Task"];
+    [open_panel setAllowedFileTypes:@[@"torrent"]];
+    
+    [open_panel beginWithCompletionHandler:^(NSInteger result) {
+        if (result != NSFileHandlingPanelOKButton) {
+            return;
+        }
+        
+        NSArray* urls = [open_panel URLs];
+        
+        for (NSURL* url in urls) {
+            [self openFile:[url path]];
+        }
+    }];
 }
 
 #pragma mark - NSUserNotificationCenterDelegate methods

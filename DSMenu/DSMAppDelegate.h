@@ -21,6 +21,9 @@
 
 @property (retain) IBOutlet DSMConnector *connector;
 
+- (void)openURL:(NSString *)url;
+
 - (IBAction)quit:(id)sender;
+- (IBAction)openFiles:(id)sender;
 
 @end

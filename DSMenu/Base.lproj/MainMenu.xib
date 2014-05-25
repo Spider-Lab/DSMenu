@@ -33,6 +33,12 @@
                 <outlet property="window" destination="4Wl-sX-uI3" id="NZu-F4-zt4"/>
             </connections>
         </customObject>
+        <customObject id="LX5-nB-pqw" userLabel="Open URL WIndow Controller" customClass="DSMOpenURLWindowController">
+            <connections>
+                <outlet property="urlField" destination="TEv-eu-76M" id="VxI-nD-clC"/>
+                <outlet property="window" destination="F17-36-a35" id="ksD-qr-a3G"/>
+            </connections>
+        </customObject>
         <customObject id="ai4-p4-5VP" customClass="DSMConnector"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
@@ -946,13 +952,26 @@ Gw
                         <binding destination="ai4-p4-5VP" name="title" keyPath="self.stateDescription" id="Eqn-u4-gg5"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Login…" id="8eP-rL-AgU">
+                <menuItem title="Connect…" id="8eP-rL-AgU">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="showLoginWindow:" target="8WO-js-v5b" id="Coa-RL-DOw"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="xgr-RQ-zGF"/>
+                <menuItem title="Open File…" id="ae3-RO-Hbj">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="openFiles:" target="Voe-Tx-rLC" id="cGU-a9-Jc2"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Open URL…" id="yjW-8t-Yfh">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="showWindow:" target="LX5-nB-pqw" id="1nm-th-2Gf"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="Nl7-2F-Reo"/>
                 <menuItem title="About DSMenu" id="3qe-6I-Cz7">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -968,6 +987,79 @@ Gw
             </items>
         </menu>
         <userDefaultsController representsSharedInstance="YES" id="7SL-eb-ulO"/>
+        <window title="Open URL" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F17-36-a35">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="360" height="116"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <view key="contentView" id="mkh-FD-78E">
+                <rect key="frame" x="0.0" y="0.0" width="360" height="116"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yAW-6b-ecR">
+                        <rect key="frame" x="264" y="13" width="82" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Open" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AH9-xm-ZsQ">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="openURL:" target="LX5-nB-pqw" id="Txu-dz-31N"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QpC-6O-X7W">
+                        <rect key="frame" x="182" y="13" width="82" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KSl-Qe-qUR">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancel:" target="LX5-nB-pqw" id="zdr-DZ-E6q"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TEv-eu-76M">
+                        <rect key="frame" x="20" y="49" width="320" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="3e5-jM-WZd">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CME-I9-uqX">
+                        <rect key="frame" x="20" y="79" width="322" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Create Task for URL:" id="Geb-H3-1hC">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="TEv-eu-76M" firstAttribute="trailing" secondItem="yAW-6b-ecR" secondAttribute="trailing" id="0Gu-mr-CVT"/>
+                    <constraint firstItem="QpC-6O-X7W" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mkh-FD-78E" secondAttribute="leading" constant="20" symbolic="YES" id="0lU-r9-Apf"/>
+                    <constraint firstItem="CME-I9-uqX" firstAttribute="top" secondItem="mkh-FD-78E" secondAttribute="top" constant="20" symbolic="YES" id="3gA-ae-VPA"/>
+                    <constraint firstItem="TEv-eu-76M" firstAttribute="leading" secondItem="mkh-FD-78E" secondAttribute="leading" constant="20" symbolic="YES" id="5da-1E-lpa"/>
+                    <constraint firstAttribute="trailing" secondItem="yAW-6b-ecR" secondAttribute="trailing" constant="20" symbolic="YES" id="BRD-6s-vWe"/>
+                    <constraint firstItem="yAW-6b-ecR" firstAttribute="width" secondItem="QpC-6O-X7W" secondAttribute="width" id="KRe-P0-PbF"/>
+                    <constraint firstItem="QpC-6O-X7W" firstAttribute="top" secondItem="TEv-eu-76M" secondAttribute="bottom" constant="8" symbolic="YES" id="Kxb-Jg-cmm"/>
+                    <constraint firstItem="yAW-6b-ecR" firstAttribute="leading" secondItem="QpC-6O-X7W" secondAttribute="trailing" constant="12" symbolic="YES" id="Wem-J2-1rh"/>
+                    <constraint firstItem="TEv-eu-76M" firstAttribute="top" secondItem="CME-I9-uqX" secondAttribute="bottom" constant="8" symbolic="YES" id="eO1-KO-ftn"/>
+                    <constraint firstItem="yAW-6b-ecR" firstAttribute="baseline" secondItem="QpC-6O-X7W" secondAttribute="baseline" id="gBC-1M-ami"/>
+                    <constraint firstItem="CME-I9-uqX" firstAttribute="trailing" secondItem="TEv-eu-76M" secondAttribute="trailing" id="hIF-EI-hIm"/>
+                    <constraint firstAttribute="bottom" secondItem="yAW-6b-ecR" secondAttribute="bottom" constant="20" symbolic="YES" id="jfs-A8-BUA"/>
+                    <constraint firstItem="CME-I9-uqX" firstAttribute="leading" secondItem="mkh-FD-78E" secondAttribute="leading" constant="22" id="sc2-h3-61k"/>
+                </constraints>
+            </view>
+        </window>
     </objects>
     <resources>
         <image name="DSMenu" width="512" height="512"/>
