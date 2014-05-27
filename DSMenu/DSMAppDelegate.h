@@ -21,6 +21,8 @@
 
 @property (retain) IBOutlet DSMConnector *connector;
 
+- (void)sendLoginFailureNotificationWithError:(NSError *)error;
+
 - (void)openURL:(NSString *)url;
 
 - (IBAction)quit:(id)sender;

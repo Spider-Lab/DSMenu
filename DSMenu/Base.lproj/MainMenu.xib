@@ -22,6 +22,11 @@
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+        <customObject id="lt1-wo-WCB" userLabel="About Window Controller" customClass="DSMWindowController">
+            <connections>
+                <outlet property="window" destination="QvC-M9-y7g" id="nDn-9r-oj4"/>
+            </connections>
+        </customObject>
         <customObject id="8WO-js-v5b" customClass="DSMLoginWindowController">
             <connections>
                 <outlet property="connector" destination="ai4-p4-5VP" id="r0V-kL-5BW"/>
@@ -690,7 +695,7 @@
             </items>
         </menu>
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="320" height="279"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
@@ -779,7 +784,7 @@ All Rights Reserved.</string>
             </view>
         </window>
         <window title="Login" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="4Wl-sX-uI3">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="311" width="283" height="187"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
@@ -975,7 +980,7 @@ Gw
                 <menuItem title="About DSMenu" id="3qe-6I-Cz7">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="makeKeyAndOrderFront:" target="QvC-M9-y7g" id="sqm-Wl-d7l"/>
+                        <action selector="showWindow:" target="lt1-wo-WCB" id="Hz0-Sw-LEo"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Quit DSMenu" id="Dqq-C6-gRt">
@@ -988,7 +993,7 @@ Gw
         </menu>
         <userDefaultsController representsSharedInstance="YES" id="7SL-eb-ulO"/>
         <window title="Open URL" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F17-36-a35">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="360" height="116"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>

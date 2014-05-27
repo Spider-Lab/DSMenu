@@ -18,17 +18,17 @@
 				<string>application/x-bittorrent</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>BitTorrent file</string>
+			<string>BitTorrent Document</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>bittorrent</string>
+				<string>com.bittorrent.torrent</string>
 			</array>
 			<key>LSTypeIsPackage</key>
 			<integer>0</integer>
 			<key>NSDocumentClass</key>
-			<string>NSDocument</string>
+			<string></string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -50,6 +50,8 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>CFBundleURLIconFile</key>
+			<string>Magnet</string>
 			<key>CFBundleURLName</key>
 			<string>magnet</string>
 			<key>CFBundleURLSchemes</key>

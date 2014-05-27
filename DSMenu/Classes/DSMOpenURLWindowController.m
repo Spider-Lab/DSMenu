@@ -14,6 +14,11 @@
 
 @implementation DSMOpenURLWindowController
 
+- (void)showWindow:(id)sender {
+    self.urlField.stringValue = @"";
+    [super showWindow:sender];
+}
+
 - (void)cancel:(id)sender {
     [self.window orderOut:nil];
 }

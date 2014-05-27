@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "DSMWindowController.h"
 
-@interface DSMOpenURLWindowController : NSWindowController
+@interface DSMOpenURLWindowController : DSMWindowController
 
 @property (retain, nonatomic) IBOutlet NSTextField *urlField;
 

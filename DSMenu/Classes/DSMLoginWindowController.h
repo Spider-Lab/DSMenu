@@ -9,8 +9,9 @@
 #import <Cocoa/Cocoa.h>
 
 #import "DSMConnector.h"
+#import "DSMWindowController.h"
 
-@interface DSMLoginWindowController : NSWindowController
+@interface DSMLoginWindowController : DSMWindowController
 
 @property (retain) IBOutlet DSMConnector *connector;
 @property (retain) IBOutlet NSTextField *host_field;

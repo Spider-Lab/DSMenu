@@ -166,7 +166,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         [self didChangeValueForKey:@"secure"];
         changed = YES;
     }
-    if (host != _host) {
+    if (![host isEqualToString:_host]) {
         [self willChangeValueForKey:@"host"];
         _host = host;
         [self didChangeValueForKey:@"host"];
@@ -178,13 +178,13 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         [self didChangeValueForKey:@"port"];
         changed = YES;
     }
-    if (user != _user) {
+    if (![user isEqualToString:_user]) {
         [self willChangeValueForKey:@"user"];
         _user = user;
         [self didChangeValueForKey:@"user"];
         changed = YES;
     }
-    if (password != _password) {
+    if (![password isEqualToString:_password]) {
         [self willChangeValueForKey:@"password"];
         _password = password;
         [self didChangeValueForKey:@"password"];
@@ -205,9 +205,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     if (self.state != DSMConnectorOffline) {
         [self setState:DSMConnectorReconnecting];
         [self logoutImmediately:NO handler:^(NSError *error) {
-            if (error) {
-                return handler(error);
-            }
+            // ignore logout errors
             [self loginHandler:completion_handler];
         }];
     }
@@ -422,9 +420,9 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
                       NSLog(@"Can't log in: %@", error);
                   }
                   else {
-                      [self setState:DSMConnectorConnected];
                       session_id = result[@"data"][@"sid"];
                       NSLog(@"logged in");
+                      [self setState:DSMConnectorConnected];
                   }
                   handler(error);
               }];

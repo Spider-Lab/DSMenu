@@ -8,6 +8,13 @@
 
 #import "DSMAppDelegate.h"
 
+@interface DSMAppDelegate () {
+    NSMutableArray *pendingFiles;
+    NSMutableArray *pendingURLs;
+}
+
+@end
+
 
 @implementation DSMAppDelegate
 
@@ -30,48 +37,58 @@
     [self.status_bar_item setHighlightMode:YES];
     [self.status_bar_item setMenu:self.status_bar_menu];
     
+}
+
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+    NSAppleEventManager *appleEventManager = [NSAppleEventManager sharedAppleEventManager];
+    [appleEventManager setEventHandler:self andSelector:@selector(handleGetURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
+
+    pendingFiles = [NSMutableArray array];
+    pendingURLs =[NSMutableArray array];
+    
     [self.connector restoreLoginHandler:^(NSError *error) {
         if (error) {
             if ([error.domain isEqualToString:DSMConnectorErrorDomain] && (error.code == DSMConnectorNoLoginError || error.code == DSMConnectorNoPasswordError)) {
                 [self.login_window_controller showLoginWindow:self];
             }
             else {
-                [self sendNotificationWithTitle:@"Can't log in" informativeText:[error localizedDescription]];
+                [self sendLoginFailureNotificationWithError:error];
             }
         }
     }];
-}
-
-- (void)applicationWillFinishLaunching:(NSNotification *)notification {
-    NSAppleEventManager *appleEventManager = [NSAppleEventManager sharedAppleEventManager];
-    [appleEventManager setEventHandler:self andSelector:@selector(handleGetURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
+    
+    [self.connector addObserver:self forKeyPath:@"state" options:0 context:NULL];
 }
 
 - (void)handleGetURLEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
+    NSLog(@"handling url %@", [[event paramDescriptorForKeyword:keyDirectObject] stringValue]);
     [self openURL:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
 }
 
 - (void)openURL:(NSString *)url {
-    NSLog(@"got URL: %@", url);
-    [NSApp deactivate];
+    NSLog(@"opening URL: %@ (state %@)", url, self.connector.stateDescription);
+    
+    if (self.connector.state == DSMConnectorLoggingIn) {
+        [pendingURLs addObject:url];
+        return;
+    }
+
     [self.connector createTaskFromURI:url handler:^(NSError *error) {
         if (error) {
             NSLog(@"can't create downlaod taks from URL %@: %@", url, error);
-
+            
             [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
         }
         else {
             NSLog(@"created download task from URL %@", url);
-
+            
             [self sendNotificationWithTitle:@"Created task" informativeText:url];
         }
     }];
-    
 }
 
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename {
-    [NSApp deactivate];
     return [self openFile:filename];
 }
 
@@ -80,6 +97,49 @@
     [self.connector logoutImmediately:YES handler:^(NSError *error) { }];
 }
 
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == self.connector && [keyPath isEqualToString:@"state"]) {
+        switch (self.connector.state) {
+            case DSMConnectorConnected: {
+                [self.status_bar_item setImage:[NSImage imageNamed:@"Status Bar Icon"]];
+                NSLog(@"processing pending tasks");
+                [pendingFiles enumerateObjectsUsingBlock:^(NSString *filename, NSUInteger idx, BOOL *stop) {
+                    NSLog(@"pending open of file %@", filename);
+                    [self openFile:filename];
+                }];
+                [pendingURLs enumerateObjectsUsingBlock:^(NSString *url, NSUInteger idx, BOOL *stop) {
+                    NSLog(@"pending open of url %@", url);
+                    [self openURL:url];
+                }];
+                [pendingFiles removeAllObjects];
+                [pendingURLs removeAllObjects];
+                NSLog(@"done processing pending tasks");
+                break; }
+                
+            case DSMConnectorOffline:
+                [self.status_bar_item setImage:[NSImage imageNamed:@"Status Bar Icon Error"]];
+                // TODO: post creation failure notifications?
+                [pendingFiles removeAllObjects];
+                [pendingURLs removeAllObjects];
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+- (void)sendLoginFailureNotificationWithError:(NSError *)error {
+    // TODO: click to open login window
+    NSUserNotification *notification = [[NSUserNotification alloc] init];
+    notification.title= @"Cannot log in";
+    notification.informativeText = [NSString stringWithFormat:@"%@\nClick to change connection settings.", [error localizedDescription]];
+    notification.hasActionButton = YES;
+    notification.actionButtonTitle = @"Connect";
+    
+    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+}
 
 - (void)sendNotificationWithTitle:(NSString *)title informativeText:(NSString *)informativeText {
     NSUserNotification *notification = [[NSUserNotification alloc] init];
@@ -90,8 +150,13 @@
 }
 
 - (BOOL)openFile:(NSString *)filename {
-    NSLog(@"opening file %@", filename);
-    
+    NSLog(@"opening file: %@ (state %@)", filename, self.connector.stateDescription);
+
+    if (self.connector.state == DSMConnectorLoggingIn) {
+        [pendingFiles addObject:filename];
+        return YES;
+    }
+
     NSData *data = [[NSFileManager defaultManager] contentsAtPath:filename];
     
     if (data == nil) {
@@ -112,7 +177,6 @@
     }];
     
     return YES;
-    
 }
 
 - (void)quit:(id)sender {
@@ -142,6 +206,13 @@
 
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification {
     return YES;
+}
+
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification {
+    // TODO: use userInfo to store type of notification/action
+    if ([notification.title isEqualToString:@"Cannot log in"]) {
+        [self.login_window_controller showLoginWindow:nil];
+    }
 }
 
 @end

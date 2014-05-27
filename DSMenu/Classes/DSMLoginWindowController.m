@@ -8,6 +8,8 @@
 
 #import "DSMLoginWindowController.h"
 
+#import "DSMAppDelegate.h"
+
 @interface DSMLoginWindowController ()
 
 @end
@@ -28,9 +30,12 @@
                              user:[self.user_field stringValue]
                          password:[self.password_field stringValue]
                         saveLogin:YES
-                          handler:^(NSError *erorr) {
-        // TODO: handle login error
-    }];
+                          handler:^(NSError *error) {
+                              if (error) {
+                                  DSMAppDelegate *app_delegate = (DSMAppDelegate *)[NSApp delegate];
+                                  [app_delegate sendLoginFailureNotificationWithError:error];
+                              }
+                          }];
     [self.window orderOut:nil];
 }
 
@@ -50,7 +55,8 @@
         [self.password_field setStringValue: self.connector.password];
     }
     [self secureChanged:nil];
-    [self.window makeKeyAndOrderFront:nil];
+    
+    [super showWindow:sender];
 }
 
 - (void)secureChanged:(id)sender {

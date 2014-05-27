@@ -23,6 +23,8 @@
 		4B53152A1924CA0600085143 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B5315091924CA0600085143 /* Cocoa.framework */; };
 		4B5315321924CA0600085143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B5315301924CA0600085143 /* InfoPlist.strings */; };
 		4B5315341924CA0600085143 /* DSMenuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5315331924CA0600085143 /* DSMenuTests.m */; };
+		4BCA997419348D790023D906 /* DSMWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA997219348D790023D906 /* DSMWindowController.m */; };
+		4BD5E7C71933E5DF0032FC86 /* Magnet.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4BD5E7C61933E5DF0032FC86 /* Magnet.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,9 @@
 		4B53152F1924CA0600085143 /* DSMenuTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DSMenuTests-Info.plist"; sourceTree = "<group>"; };
 		4B5315311924CA0600085143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B5315331924CA0600085143 /* DSMenuTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DSMenuTests.m; sourceTree = "<group>"; };
+		4BCA997119348D790023D906 /* DSMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMWindowController.h; path = Classes/DSMWindowController.h; sourceTree = "<group>"; };
+		4BCA997219348D790023D906 /* DSMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMWindowController.m; path = Classes/DSMWindowController.m; sourceTree = "<group>"; };
+		4BD5E7C61933E5DF0032FC86 /* Magnet.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Magnet.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +97,7 @@
 			children = (
 				4B03D301192630A0001293B9 /* TODO.md */,
 				4B03D2FF1926227F001293B9 /* DSMenu.icns */,
+				4BD5E7C61933E5DF0032FC86 /* Magnet.icns */,
 				4B53150F1924CA0600085143 /* DSMenu */,
 				4B53152D1924CA0600085143 /* DSMenuTests */,
 				4B5315081924CA0600085143 /* Frameworks */,
@@ -139,6 +145,8 @@
 				4B0714B01927F2D1004F3128 /* DSMLoginWindowController.m */,
 				4B2C28611931EC0A00BF9974 /* DSMOpenURLWindowController.h */,
 				4B2C28621931EC0A00BF9974 /* DSMOpenURLWindowController.m */,
+				4BCA997119348D790023D906 /* DSMWindowController.h */,
+				4BCA997219348D790023D906 /* DSMWindowController.m */,
 				4B53151E1924CA0600085143 /* MainMenu.xib */,
 				4B5315211924CA0600085143 /* Images.xcassets */,
 				4B5315101924CA0600085143 /* Supporting Files */,
@@ -268,6 +276,7 @@
 				4B5315221924CA0600085143 /* Images.xcassets in Resources */,
 				4B53151A1924CA0600085143 /* Credits.rtf in Resources */,
 				4B5315201924CA0600085143 /* MainMenu.xib in Resources */,
+				4BD5E7C71933E5DF0032FC86 /* Magnet.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,6 +299,7 @@
 				4B3C0AF4192550650076B3A1 /* DSMConnector.m in Sources */,
 				4B2C28641931EC0A00BF9974 /* DSMOpenURLWindowController.m in Sources */,
 				4B5315161924CA0600085143 /* main.m in Sources */,
+				4BCA997419348D790023D906 /* DSMWindowController.m in Sources */,
 				4B53151D1924CA0600085143 /* DSMAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
