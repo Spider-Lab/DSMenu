@@ -35,7 +35,6 @@
 
 ## bugs
 
-- dismiss about window on escape
 - improve certificate acceptance (only synology or self signed)
 - only allow digits in port field (login window)
 

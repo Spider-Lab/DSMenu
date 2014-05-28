@@ -22,7 +22,7 @@
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
-        <customObject id="lt1-wo-WCB" userLabel="About Window Controller" customClass="DSMWindowController">
+        <customObject id="lt1-wo-WCB" userLabel="About Window Controller" customClass="DSMAboutWindowController">
             <connections>
                 <outlet property="window" destination="QvC-M9-y7g" id="nDn-9r-oj4"/>
             </connections>

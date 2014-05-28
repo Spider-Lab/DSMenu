@@ -24,6 +24,7 @@
 		4B5315321924CA0600085143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B5315301924CA0600085143 /* InfoPlist.strings */; };
 		4B5315341924CA0600085143 /* DSMenuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5315331924CA0600085143 /* DSMenuTests.m */; };
 		4BCA997419348D790023D906 /* DSMWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA997219348D790023D906 /* DSMWindowController.m */; };
+		4BCA997819354BCF0023D906 /* DSMAboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA997719354BCF0023D906 /* DSMAboutWindowController.m */; };
 		4BD5E7C71933E5DF0032FC86 /* Magnet.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4BD5E7C61933E5DF0032FC86 /* Magnet.icns */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,8 @@
 		4B5315331924CA0600085143 /* DSMenuTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DSMenuTests.m; sourceTree = "<group>"; };
 		4BCA997119348D790023D906 /* DSMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMWindowController.h; path = Classes/DSMWindowController.h; sourceTree = "<group>"; };
 		4BCA997219348D790023D906 /* DSMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMWindowController.m; path = Classes/DSMWindowController.m; sourceTree = "<group>"; };
+		4BCA997619354BCF0023D906 /* DSMAboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMAboutWindowController.h; path = Classes/DSMAboutWindowController.h; sourceTree = "<group>"; };
+		4BCA997719354BCF0023D906 /* DSMAboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMAboutWindowController.m; path = Classes/DSMAboutWindowController.m; sourceTree = "<group>"; };
 		4BD5E7C61933E5DF0032FC86 /* Magnet.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Magnet.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				4B53151B1924CA0600085143 /* DSMAppDelegate.h */,
+				4BCA997619354BCF0023D906 /* DSMAboutWindowController.h */,
+				4BCA997719354BCF0023D906 /* DSMAboutWindowController.m */,
 				4B53151C1924CA0600085143 /* DSMAppDelegate.m */,
 				4B3C0AF2192550650076B3A1 /* DSMConnector.h */,
 				4B3C0AF3192550650076B3A1 /* DSMConnector.m */,
@@ -298,6 +303,7 @@
 				4B0714B11927F2D1004F3128 /* DSMLoginWindowController.m in Sources */,
 				4B3C0AF4192550650076B3A1 /* DSMConnector.m in Sources */,
 				4B2C28641931EC0A00BF9974 /* DSMOpenURLWindowController.m in Sources */,
+				4BCA997819354BCF0023D906 /* DSMAboutWindowController.m in Sources */,
 				4B5315161924CA0600085143 /* main.m in Sources */,
 				4BCA997419348D790023D906 /* DSMWindowController.m in Sources */,
 				4B53151D1924CA0600085143 /* DSMAppDelegate.m in Sources */,
