@@ -4,21 +4,17 @@
 
 ## bugs
 
-- fix association with .torrent files
-
 
 # important
 
 ## features
 
-- set state to offline when session timed out / interrupted
 - reconnect menu item
-- disable traffic log for production build
 
 ## bugs
 
-- don't grab focus when opening URL/file
 - when changing connection data, use old connection for logout
+- don't grab focus when opening URL/file
 - use alert style notification for login failure?
 - display correct cursor in about link
 
@@ -27,7 +23,6 @@
 
 ## features
 
-- better .torrent icon
 - better magnet:// icon
 - checkbox menu item to start at login
 - list downloads
@@ -41,3 +36,4 @@
 ## cleanup
 
 - sort DSMAppDelegate methods
+- improve method names (esp. with handlers)

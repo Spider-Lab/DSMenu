@@ -61,12 +61,16 @@
 }
 
 - (void)handleGetURLEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
+#if DEBUG
     NSLog(@"handling url %@", [[event paramDescriptorForKeyword:keyDirectObject] stringValue]);
+#endif
     [self openURL:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
 }
 
 - (void)openURL:(NSString *)url {
+#if DEBUG
     NSLog(@"opening URL: %@ (state %@)", url, self.connector.stateDescription);
+#endif
     
     if (self.connector.state == DSMConnectorLoggingIn) {
         [pendingURLs addObject:url];
@@ -80,7 +84,9 @@
             [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
         }
         else {
+#if DEBUG
             NSLog(@"created download task from URL %@", url);
+#endif
             
             [self sendNotificationWithTitle:@"Created task" informativeText:url];
         }
@@ -103,7 +109,9 @@
         switch (self.connector.state) {
             case DSMConnectorConnected: {
                 [self.status_bar_item setImage:[NSImage imageNamed:@"Status Bar Icon"]];
+#if DEBUG
                 NSLog(@"processing pending tasks");
+#endif
                 [pendingFiles enumerateObjectsUsingBlock:^(NSString *filename, NSUInteger idx, BOOL *stop) {
                     NSLog(@"pending open of file %@", filename);
                     [self openFile:filename];
@@ -150,7 +158,9 @@
 }
 
 - (BOOL)openFile:(NSString *)filename {
+#if DEBUG
     NSLog(@"opening file: %@ (state %@)", filename, self.connector.stateDescription);
+#endif
 
     if (self.connector.state == DSMConnectorLoggingIn) {
         [pendingFiles addObject:filename];
@@ -171,7 +181,9 @@
             [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
         }
         else {
+#if DEBUG
             NSLog(@"created download task from file %@", filename);
+#endif
             [self sendNotificationWithTitle:@"Created task" informativeText:[filename lastPathComponent]];
         }
     }];

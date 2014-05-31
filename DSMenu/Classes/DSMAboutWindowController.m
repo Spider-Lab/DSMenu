@@ -22,7 +22,6 @@
                 return theEvent;
             }
             
-            NSLog(@"event monitor: %@", theEvent);
             if (theEvent.keyCode == 53) {
                 [self.window orderOut:nil];
                 return (NSEvent *)nil;

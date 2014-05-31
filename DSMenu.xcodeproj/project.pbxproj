@@ -23,6 +23,7 @@
 		4B53152A1924CA0600085143 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B5315091924CA0600085143 /* Cocoa.framework */; };
 		4B5315321924CA0600085143 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B5315301924CA0600085143 /* InfoPlist.strings */; };
 		4B5315341924CA0600085143 /* DSMenuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5315331924CA0600085143 /* DSMenuTests.m */; };
+		4B85E832193A16AD00214CB5 /* Torrent.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4B85E831193A16AD00214CB5 /* Torrent.icns */; };
 		4BCA997419348D790023D906 /* DSMWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA997219348D790023D906 /* DSMWindowController.m */; };
 		4BCA997819354BCF0023D906 /* DSMAboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA997719354BCF0023D906 /* DSMAboutWindowController.m */; };
 		4BD5E7C71933E5DF0032FC86 /* Magnet.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4BD5E7C61933E5DF0032FC86 /* Magnet.icns */; };
@@ -67,6 +68,7 @@
 		4B53152F1924CA0600085143 /* DSMenuTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DSMenuTests-Info.plist"; sourceTree = "<group>"; };
 		4B5315311924CA0600085143 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4B5315331924CA0600085143 /* DSMenuTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DSMenuTests.m; sourceTree = "<group>"; };
+		4B85E831193A16AD00214CB5 /* Torrent.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Torrent.icns; sourceTree = "<group>"; };
 		4BCA997119348D790023D906 /* DSMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMWindowController.h; path = Classes/DSMWindowController.h; sourceTree = "<group>"; };
 		4BCA997219348D790023D906 /* DSMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMWindowController.m; path = Classes/DSMWindowController.m; sourceTree = "<group>"; };
 		4BCA997619354BCF0023D906 /* DSMAboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMAboutWindowController.h; path = Classes/DSMAboutWindowController.h; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				4B03D301192630A0001293B9 /* TODO.md */,
 				4B03D2FF1926227F001293B9 /* DSMenu.icns */,
 				4BD5E7C61933E5DF0032FC86 /* Magnet.icns */,
+				4B85E831193A16AD00214CB5 /* Torrent.icns */,
 				4B53150F1924CA0600085143 /* DSMenu */,
 				4B53152D1924CA0600085143 /* DSMenuTests */,
 				4B5315081924CA0600085143 /* Frameworks */,
@@ -280,6 +283,7 @@
 				4B03D3001926227F001293B9 /* DSMenu.icns in Resources */,
 				4B5315221924CA0600085143 /* Images.xcassets in Resources */,
 				4B53151A1924CA0600085143 /* Credits.rtf in Resources */,
+				4B85E832193A16AD00214CB5 /* Torrent.icns in Resources */,
 				4B5315201924CA0600085143 /* MainMenu.xib in Resources */,
 				4BD5E7C71933E5DF0032FC86 /* Magnet.icns in Resources */,
 			);
@@ -368,8 +372,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -381,7 +385,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -406,8 +410,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -421,7 +425,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

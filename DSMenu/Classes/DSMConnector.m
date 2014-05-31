@@ -350,25 +350,32 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         hide_password = [NSRegularExpression regularExpressionWithPattern:@"passwd=[^&]*" options:0 error:NULL];
     }
     
+#if DEBUG
     NSString *url_string = [[request URL] absoluteString];
     NSRange r = { 0, [url_string length] };
     NSString *url_log = [hide_password stringByReplacingMatchesInString:url_string options:0 range:r withTemplate:@"passwd=XXXX"];
     NSLog(@"sending request %@", url_log);
-    
+#endif
 
     [self beginRequest:request];
     (void)[[DSMConnectorRequest alloc] initWithURLRequest:request completionHandler:^(NSURLRequest *request, NSURLResponse *response, NSData *body, NSError *error) {
         [self completedRequest:request];
         if (error) {
+#if DEBUG
             NSLog(@"got error: %@", error);
+#endif
             return handler(nil, error);
         }
         if (!body) {
+#if DEBUG
             NSLog(@"got empty result");
+#endif
             return handler(nil, [self errorWithCode:DSMConnectorInvalidReplyError message:nil]);
         }
-        
+      
+#if DEBUG
         NSLog(@"got result: %@", [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+#endif
         NSDictionary *result = nil;
         result = [NSJSONSerialization JSONObjectWithData:body options:0 error:&error];
         if (!result) {
@@ -377,12 +384,16 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         
         if ([result[@"success"] boolValue] != YES) {
             if ([result[@"success"] boolValue] != YES) {
-                error = [self errorWithCode:[result[@"error"][@"code"] integerValue] message:nil];
+                NSInteger error_code = [result[@"error"][@"code"] integerValue];
+                error = [self errorWithCode:error_code message:nil];
                 result = nil;
+                if (error_code == DSMConnectorSessionInterruptedError || error_code == DSMConnectorSessionTimedOutError) {
+                    [self setState:DSMConnectorOffline];
+                }
             }
         }
-        handler(result, error);
-        }];
+        return handler(result, error);
+    }];
 }
 
 
@@ -421,7 +432,9 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
                   }
                   else {
                       session_id = result[@"data"][@"sid"];
+#if DEBUG
                       NSLog(@"logged in");
+#endif
                       [self setState:DSMConnectorConnected];
                   }
                   handler(error);
@@ -530,8 +543,10 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 
 
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+#if DEBUG
     NSLog(@"validating certificate: error [%@] failureResponse [%@] proposedCredential [%@] protectionSpace [%@]",
           [challenge error], [challenge failureResponse], [challenge proposedCredential], [challenge protectionSpace]);
+#endif
     if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
 		// we only trust our own domain
 		if ([challenge.protectionSpace.host isEqualToString:[[request URL] host]]) {
