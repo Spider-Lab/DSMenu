@@ -143,9 +143,9 @@
 		4B53150F1924CA0600085143 /* DSMenu */ = {
 			isa = PBXGroup;
 			children = (
-				4B53151B1924CA0600085143 /* DSMAppDelegate.h */,
 				4BCA997619354BCF0023D906 /* DSMAboutWindowController.h */,
 				4BCA997719354BCF0023D906 /* DSMAboutWindowController.m */,
+				4B53151B1924CA0600085143 /* DSMAppDelegate.h */,
 				4B53151C1924CA0600085143 /* DSMAppDelegate.m */,
 				4B3C0AF2192550650076B3A1 /* DSMConnector.h */,
 				4B3C0AF3192550650076B3A1 /* DSMConnector.m */,

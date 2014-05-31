@@ -836,6 +836,9 @@ All Rights Reserved.</string>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <binding destination="8WO-js-v5b" name="value" keyPath="connectionInfo.host" id="03U-FN-m4i"/>
+                        </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fk8-Lc-dP8">
                         <rect key="frame" x="90" y="113" width="81" height="22"/>
@@ -857,6 +860,9 @@ All Rights Reserved.</string>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <binding destination="8WO-js-v5b" name="value" keyPath="connectionInfo.user" id="knC-rd-vUj"/>
+                        </connections>
                     </textField>
                     <button translatesAutoresizingMaskIntoConstraints="NO" id="bGF-aA-Xwv">
                         <rect key="frame" x="177" y="114" width="88" height="18"/>
@@ -867,6 +873,7 @@ All Rights Reserved.</string>
                         </buttonCell>
                         <connections>
                             <action selector="secureChanged:" target="8WO-js-v5b" id="Ykc-9c-JTf"/>
+                            <binding destination="8WO-js-v5b" name="value" keyPath="connectionInfo.secure" id="UJc-hz-JN8"/>
                         </connections>
                     </button>
                     <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rW4-OI-VPb">
@@ -880,6 +887,9 @@ All Rights Reserved.</string>
                                 <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                             </allowedInputSourceLocales>
                         </secureTextFieldCell>
+                        <connections>
+                            <binding destination="8WO-js-v5b" name="value" keyPath="connectionInfo.password" id="qqG-LW-mal"/>
+                        </connections>
                     </secureTextField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1LN-RB-l2G">
                         <rect key="frame" x="187" y="13" width="82" height="32"/>

@@ -78,7 +78,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         return nil;
 
     _state = DSMConnectorOffline;
-    _secure = YES;
+    _connectionInfo = nil;
     outstanding_requests = [NSMutableSet set];
     logout_completion_handler = NULL;
     
@@ -98,7 +98,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         case DSMConnectorLoggingOut:
             return @"Disconnecting…";
         case DSMConnectorConnected:
-            return [NSString stringWithFormat:@"Connected to %@", self.host];
+            return [NSString stringWithFormat:@"Connected to %@", self.connectionInfo.host];
     }
 }
 
@@ -118,149 +118,53 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 
 #pragma mark - Login
 
-- (void)restoreLoginHandler:(void (^)(NSError *))handler {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+- (void)restoreLoginWithHandler:(void (^)(NSError *))handler {
+    NSError *error = nil;
+    DSMConnectorConnectionInfo *info = [[DSMConnectorConnectionInfo alloc] initWithUserDefaultsError:&error];
     
-    NSString *secure_obj = [defaults objectForKey:DEFAULTS_SECURE_KEY];
-    NSString *host = [defaults objectForKey:DEFAULTS_HOST_KEY];
-    NSString *port_obj = [defaults objectForKey:DEFAULTS_PORT_KEY];
-    NSString *user = [defaults objectForKey:DEFAULTS_USER_KEY];
-    
-    if (secure_obj == nil || host == nil || port_obj == nil || user == nil) {
-        return handler([self errorWithCode:DSMConnectorNoLoginError message:nil]);
-    }
-    
-    NSInteger port = [port_obj integerValue];
-    BOOL secure = [secure_obj boolValue];
-    
-    if (port < 0 || port > 0xffff) {
-        return handler([self errorWithCode:DSMConnectorInvalidParameterError message:[NSString stringWithFormat:@"invalid port %@", port_obj]]);
+    if (info == nil) {
+        return handler(error);
     }
 
-    NSString *password = [self getPasswordforSecure:secure Host:host port:port user:user];
-    if (password == nil) {
-        return handler([self errorWithCode:DSMConnectorNoPasswordError message:nil]);
-    }
-    
-    [self connectSecure:secure host:host port:(NSUInteger)port user:user password:password saveLogin:NO handler:handler];
+    [self connectTo:info handler:handler];
 }
 
-- (void)connectSecure:(BOOL)secure host:(NSString *)host port:(NSUInteger)port user:(NSString *)user password:(NSString *)password saveLogin:(BOOL)save_login handler:(void (^)(NSError *))handler {
-    if (host == nil || user == nil || password == nil) {
-        return handler([self errorWithCode:DSMConnectorInvalidParameterError message:nil]);
-    }
-    
-    if (port == 0) {
-        port = secure ? 5001 : 5000;
-    }
-    
-    if (port > 0xffff) {
-        return handler([self errorWithCode:DSMConnectorInvalidParameterError message:[NSString stringWithFormat:@"invalid port %lu", port]]);
-    }
 
-    BOOL changed = NO;
+- (void)connectTo:(DSMConnectorConnectionInfo *)info handler:(void (^)(NSError *))handler {
+    if (info == nil || ![info isValid]) {
+        return handler([DSMConnector errorWithCode:DSMConnectorInvalidParameterError message:nil]);
+    }
     
-    if (secure != _secure) {
-        [self willChangeValueForKey:@"secure"];
-        _secure = secure;
-        [self didChangeValueForKey:@"secure"];
-        changed = YES;
-    }
-    if (![host isEqualToString:_host]) {
-        [self willChangeValueForKey:@"host"];
-        _host = host;
-        [self didChangeValueForKey:@"host"];
-        changed = YES;
-    }
-    if (port != _port) {
-        [self willChangeValueForKey:@"port"];
-        _port = port;
-        [self didChangeValueForKey:@"port"];
-        changed = YES;
-    }
-    if (![user isEqualToString:_user]) {
-        [self willChangeValueForKey:@"user"];
-        _user = user;
-        [self didChangeValueForKey:@"user"];
-        changed = YES;
-    }
-    if (![password isEqualToString:_password]) {
-        [self willChangeValueForKey:@"password"];
-        _password = password;
-        [self didChangeValueForKey:@"password"];
-        changed = YES;
-    }
-
-    if (!changed) {
+    if ([info isEqualToConnectionInfo:self.connectionInfo]) {
         return handler(nil);
     }
-    
-    void (^completion_handler)(NSError *) = ^void(NSError *error) {
-        if (error == nil && save_login) {
-            [self saveLogin];
-        }
-        return handler(error);
-    };
-    
+
     if (self.state != DSMConnectorOffline) {
         [self setState:DSMConnectorReconnecting];
         [self logoutImmediately:NO handler:^(NSError *error) {
             // ignore logout errors
-            [self loginHandler:completion_handler];
+            
+            [self willChangeValueForKey:@"connectionInfo"];
+            _connectionInfo = info;
+            [self didChangeValueForKey:@"connectionInfo"];
+
+            [self loginHandler:handler];
         }];
     }
     else {
-        [self loginHandler:completion_handler];
+        [self willChangeValueForKey:@"connectionInfo"];
+        _connectionInfo = info;
+        [self didChangeValueForKey:@"connectionInfo"];
+
+        [self loginHandler:handler];
     }
 }
 
-
-- (NSString *)getPasswordforSecure:(BOOL)secure Host:(NSString *)host port:(NSUInteger)port user:(NSString *)user {
-    const char *c_host = [host UTF8String];
-    const char *c_user = [user UTF8String];
-    void *c_password;
-    UInt32 password_length;
-    
-    int protocol = secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
-
-    OSStatus status = SecKeychainFindInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", port, protocol, kSecAuthenticationTypeAny, &password_length, &c_password, NULL);
-    
-    if (status != 0)
-        return nil;
-    
-    NSString *password = [[NSString alloc] initWithBytes:c_password length:password_length encoding:NSUTF8StringEncoding];
-    
-    SecKeychainItemFreeContent(NULL, c_password);
-    
-    return password;
-}
-
-- (BOOL)saveLogin {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    [defaults setObject:@(self.secure) forKey:DEFAULTS_SECURE_KEY];
-    [defaults setObject:self.host forKey:DEFAULTS_HOST_KEY];
-    [defaults setObject:@(self.port) forKey:DEFAULTS_PORT_KEY];
-    [defaults setObject:self.user forKey:DEFAULTS_USER_KEY];
-    
-    return [self savePassword];
-}
-
-- (BOOL)savePassword {
-    const char *c_host = [self.host UTF8String];
-    const char *c_user = [self.user UTF8String];
-    const char *c_password = [self.user UTF8String];
-    
-    int protocol = self.secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
-    OSStatus status = SecKeychainAddInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", self.port, protocol, kSecAuthenticationTypeDefault, (UInt32)strlen(c_password), c_password, NULL);
-    
-    return status == 0;
-}
 
 #pragma mark - Protocol Helpers
 
 - (NSString *)baseURL {
-    return [NSString stringWithFormat:@"%s://%@:%lu/webapi/", self.secure ? "https" : "http", self.host, (unsigned long)self.port];
+    return [[self.connectionInfo baseURL] stringByAppendingString:@"webapi/"];
 }
 
 - (NSString *)URLescape:(NSString *)string {
@@ -370,7 +274,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 #if DEBUG
             NSLog(@"got empty result");
 #endif
-            return handler(nil, [self errorWithCode:DSMConnectorInvalidReplyError message:nil]);
+            return handler(nil, [DSMConnector errorWithCode:DSMConnectorInvalidReplyError message:nil]);
         }
       
 #if DEBUG
@@ -379,13 +283,13 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         NSDictionary *result = nil;
         result = [NSJSONSerialization JSONObjectWithData:body options:0 error:&error];
         if (!result) {
-            return handler(nil, [self errorWithCode:DSMConnectorInvalidReplyError message:nil]);
+            return handler(nil, [DSMConnector errorWithCode:DSMConnectorInvalidReplyError message:nil]);
         }
         
         if ([result[@"success"] boolValue] != YES) {
             if ([result[@"success"] boolValue] != YES) {
                 NSInteger error_code = [result[@"error"][@"code"] integerValue];
-                error = [self errorWithCode:error_code message:nil];
+                error = [DSMConnector errorWithCode:error_code message:nil];
                 result = nil;
                 if (error_code == DSMConnectorSessionInterruptedError || error_code == DSMConnectorSessionTimedOutError) {
                     [self setState:DSMConnectorOffline];
@@ -421,8 +325,8 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     
     [self sendRequestToEndpoint:AUTH_ENDPOINT
                  withParameters:@{ @"api": AUTH_API, @"method": @"login", @"version": @"2",
-                                   @"account": self.user,
-                                   @"passwd": self.password,
+                                   @"account": self.connectionInfo.user,
+                                   @"passwd": self.connectionInfo.password,
                                    @"session": @"DSMenu",
                                    @"format": @"sid" }
               completionHandler:^(NSDictionary *result, NSError *error) {
@@ -465,7 +369,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     switch (self.state) {
         case DSMConnectorOffline:
         case DSMConnectorLoggingOut:
-            return handler([self errorWithCode:DSMConnectorNotConnectedError message:nil]);
+            return handler([DSMConnector errorWithCode:DSMConnectorNotConnectedError message:nil]);
             
         case DSMConnectorLoggingIn:
         case DSMConnectorReconnecting:
@@ -487,7 +391,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     switch (self.state) {
         case DSMConnectorOffline:
         case DSMConnectorLoggingOut:
-            return handler([self errorWithCode:DSMConnectorNotConnectedError message:nil]);
+            return handler([DSMConnector errorWithCode:DSMConnectorNotConnectedError message:nil]);
             
         case DSMConnectorLoggingIn:
         case DSMConnectorReconnecting:
@@ -508,7 +412,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 }
 
 
-- (NSError *)errorWithCode:(NSInteger)code message:(NSString *)message {
++ (NSError *)errorWithCode:(NSInteger)code message:(NSString *)message {
     NSString *description = ErrorDescription[@(code)];
     if (description == nil) {
         description = [NSString stringWithFormat:@"Unknown error %ld", code];
@@ -522,6 +426,8 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 
 @end
 
+
+#pragma mark -
 #pragma mark -
 
 @implementation DSMConnectorRequest
@@ -579,6 +485,147 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     return completion_handler(request, response, body, error);
+}
+
+@end
+
+
+#pragma mark -
+#pragma mark -
+
+@implementation DSMConnectorConnectionInfo
+
+-(id)initWithSecure:(BOOL)secure host:(NSString *)host port:(NSNumber *)port user:(NSString *)user password:(NSString *)password {
+    if ((self = [super init]) == nil)
+        return nil;
+    
+    self.secure = secure;
+    self.host = host;
+    self.port = port;
+    self.user = user;
+    self.password = password;
+    
+    return self;
+}
+
+
+- (id)initWithInfo:(DSMConnectorConnectionInfo *)info {
+    return [self initWithSecure:info.secure host:info.host port:info.port user:info.user password:info.password];
+}
+
+- (id)initWithUserDefaultsError:(NSError *__autoreleasing *)error {
+    if ((self = [super init]) == nil) {
+        return nil;
+    }
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *secure_obj = [defaults objectForKey:DEFAULTS_SECURE_KEY];
+    self.host = [defaults objectForKey:DEFAULTS_HOST_KEY];
+    self.port = [defaults objectForKey:DEFAULTS_PORT_KEY];
+    self.user = [defaults objectForKey:DEFAULTS_USER_KEY];
+    
+    if (secure_obj == nil || self.host == nil || self.port == nil || self.user == nil) {
+        if (error) {
+            *error = [DSMConnector errorWithCode:DSMConnectorNoLoginError message:nil];
+        }
+        return nil;
+    }
+
+    self.secure = [secure_obj boolValue];
+    
+    self.password = [self getPassword];
+    if (self.password == nil) {
+        if (error) {
+            *error = [DSMConnector errorWithCode:DSMConnectorNoPasswordError message:nil];
+        }
+        return nil;
+    }
+
+    if (![self isValid]) {
+        if (error) {
+            *error = [DSMConnector errorWithCode:DSMConnectorInvalidParameterError message:nil];
+            return nil;
+        }
+    }
+
+    return self;
+}
+
+
+- (NSString *)baseURL {
+    return [NSString stringWithFormat:@"%s://%@:%ld/", self.secure ? "https" : "http", self.host, [self.port integerValue]];
+}
+
+- (BOOL)isValid {
+    if (self.host == nil || self.host.length == 0
+        || self.port == nil
+        || self.user == nil || self.user.length == 0
+        || self.password == nil)
+        return NO;
+
+    NSInteger port = [self.port integerValue];
+    
+    if (port < 0 || port > 0xffff) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)isEqualToConnectionInfo:(DSMConnectorConnectionInfo *)info {
+    return (self.secure == info.secure
+            && [self.host isEqualToString:info.host]
+            && [self.port isEqualToNumber:info.port]
+            && [self.user isEqualToString:info.user]
+            && [self.password isEqualToString:info.password]);
+}
+
+
+- (BOOL)saveToUserDefaults {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:@(self.secure) forKey:DEFAULTS_SECURE_KEY];
+    [defaults setObject:self.host forKey:DEFAULTS_HOST_KEY];
+    [defaults setObject:self.port forKey:DEFAULTS_PORT_KEY];
+    [defaults setObject:self.user forKey:DEFAULTS_USER_KEY];
+    
+    return [self savePassword];
+}
+
+
+#pragma mark - private methods
+
+- (NSString *)getPassword {
+    const char *c_host = [self.host UTF8String];
+    const char *c_user = [self.user UTF8String];
+    void *c_password;
+    UInt32 password_length;
+    
+    int protocol = self.secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
+    
+    OSStatus status = SecKeychainFindInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", (UInt16)[self.port integerValue], protocol, kSecAuthenticationTypeAny, &password_length, &c_password, NULL);
+    
+    if (status != 0)
+        return nil;
+    
+    NSString *password = [[NSString alloc] initWithBytes:c_password length:password_length encoding:NSUTF8StringEncoding];
+    
+    SecKeychainItemFreeContent(NULL, c_password);
+    
+    return password;
+}
+
+
+- (BOOL)savePassword {
+    const char *c_host = [self.host UTF8String];
+    const char *c_user = [self.user UTF8String];
+    const char *c_password = [self.password UTF8String];
+    
+    int protocol = self.secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
+    OSStatus status = SecKeychainAddInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", (UInt16)[self.port integerValue], protocol, kSecAuthenticationTypeDefault, (UInt32)strlen(c_password), c_password, NULL);
+    
+    return status == 0;
 }
 
 @end

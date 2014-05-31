@@ -46,7 +46,7 @@
     pendingFiles = [NSMutableArray array];
     pendingURLs =[NSMutableArray array];
     
-    [self.connector restoreLoginHandler:^(NSError *error) {
+    [self.connector restoreLoginWithHandler:^(NSError *error) {
         if (error) {
             if ([error.domain isEqualToString:DSMConnectorErrorDomain] && (error.code == DSMConnectorNoLoginError || error.code == DSMConnectorNoPasswordError)) {
                 [self.login_window_controller showLoginWindow:self];

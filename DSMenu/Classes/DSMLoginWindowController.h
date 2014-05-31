@@ -20,6 +20,8 @@
 @property (retain) IBOutlet NSTextField *password_field;
 @property (retain) IBOutlet NSButton *secure_checkbox;
 
+@property (readonly, retain) DSMConnectorConnectionInfo *connectionInfo;
+
 - (IBAction)cancel:(id)sender;
 - (IBAction)ok:(id)sender;
 - (IBAction)secureChanged:(id)sender;

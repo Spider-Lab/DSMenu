@@ -40,23 +40,40 @@ enum {
     DSMConnectorPermissionDeniedError = 404
 };
 
+@interface DSMConnectorConnectionInfo : NSObject
+
+- (id)initWithSecure:(BOOL)secure host:(NSString *)host port:(NSNumber *)port user:(NSString *)user password:(NSString *)password;
+- (id)initWithInfo:(DSMConnectorConnectionInfo *)info;
+- (id)initWithUserDefaultsError:(NSError **)error;
+
+- (NSString *)baseURL;
+- (BOOL)isValid;
+- (BOOL)isEqualToConnectionInfo:(DSMConnectorConnectionInfo *)info;
+
+- (BOOL)saveToUserDefaults;
+
+@property (readwrite, copy) NSString *host;
+@property (readwrite) BOOL secure;
+@property (readwrite, copy) NSNumber *port;
+@property (readwrite, copy) NSString *user;
+@property (readwrite, copy) NSString *password;
+
+@end
+
+
 @interface DSMConnector : NSObject<NSURLConnectionDelegate,NSURLConnectionDataDelegate>
 
 @property (readonly) DSMConnectorState state;
 @property (readonly, retain) NSString *stateDescription;
-@property (readonly) BOOL secure;
-@property (readonly, retain) NSString *host;
-@property (readonly) NSUInteger port;
-@property (readonly, retain) NSString *user;
-@property (readonly, retain) NSString *password;
+@property (readonly, retain) DSMConnectorConnectionInfo *connectionInfo;
 
 - (id)init;
 
-- (void)restoreLoginHandler:(void (^)(NSError *))handler;
+- (void)restoreLoginWithHandler:(void (^)(NSError *))handler;
 
 - (void)createTaskFromFilename:(NSString *)filename data:(NSData *)data handler:(void (^)(NSError *))handler;
 - (void)createTaskFromURI:(NSString *)URI handler:(void (^)(NSError *))handler;
-- (void)connectSecure:(BOOL)secure host:(NSString *)host port:(NSUInteger)port user:(NSString *)user password:(NSString *)password saveLogin:(BOOL)save_login handler:(void (^)(NSError *))handler;
+- (void)connectTo:(DSMConnectorConnectionInfo *)info handler:(void (^)(NSError *))handler;
 - (void)logoutImmediately:(BOOL)immediately handler:(void (^)(NSError *))handler;
 
 @end
