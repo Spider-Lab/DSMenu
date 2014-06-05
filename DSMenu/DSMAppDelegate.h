@@ -16,7 +16,6 @@
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSMenu *status_bar_menu;
 @property (assign) IBOutlet DSMLoginWindowController *login_window_controller;
-@property (retain) IBOutlet NSTextField *about_link;
 @property (retain) NSStatusItem *status_bar_item;
 
 @property (retain) IBOutlet DSMConnector *connector;

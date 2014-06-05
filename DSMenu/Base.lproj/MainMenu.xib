@@ -24,6 +24,7 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <customObject id="lt1-wo-WCB" userLabel="About Window Controller" customClass="DSMAboutWindowController">
             <connections>
+                <outlet property="linkField" destination="mD6-cY-ZEx" id="vp2-7x-2eo"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="nDn-9r-oj4"/>
             </connections>
         </customObject>
@@ -851,6 +852,14 @@ All Rights Reserved.</string>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <binding destination="8WO-js-v5b" name="value" keyPath="connectionInfo.port" id="8SG-Ca-OIO">
+                                <dictionary key="options">
+                                    <string key="NSValueTransformerName">SLAIntegerTransformer</string>
+                                </dictionary>
+                            </binding>
+                            <outlet property="delegate" destination="8WO-js-v5b" id="kat-KL-R6E"/>
+                        </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SzU-Ta-xSc">
                         <rect key="frame" x="90" y="81" width="173" height="22"/>

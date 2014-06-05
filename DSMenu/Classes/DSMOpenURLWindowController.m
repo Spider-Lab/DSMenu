@@ -15,7 +15,21 @@
 @implementation DSMOpenURLWindowController
 
 - (void)showWindow:(id)sender {
-    self.urlField.stringValue = @"";
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    NSArray *urls = [pasteboard readObjectsForClasses:@[[NSURL class]] options:nil];
+    
+    NSString *content = @"";
+    for (NSURL *url in urls) {
+        if ([url isFileURL] || [url isFileReferenceURL]) {
+            continue;
+        }
+        
+        content = [url absoluteString];
+        break;
+    }
+    
+    self.urlField.stringValue = content;
+    [self.urlField selectText:nil];
     [super showWindow:sender];
 }
 

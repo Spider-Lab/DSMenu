@@ -107,11 +107,9 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     if (state == _state) {
         return;
     }
-    
+
     [self willChangeValueForKey:@"stateDescription"];
-    [self willChangeValueForKey:@"state"];
     _state = state;
-    [self didChangeValueForKey:@"state"];
     [self didChangeValueForKey:@"stateDescription"];
 }
 
@@ -525,7 +523,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     self.port = [defaults objectForKey:DEFAULTS_PORT_KEY];
     self.user = [defaults objectForKey:DEFAULTS_USER_KEY];
     
-    if (secure_obj == nil || self.host == nil || self.port == nil || self.user == nil) {
+    if (secure_obj == nil || self.host == nil || self.user == nil) {
         if (error) {
             *error = [DSMConnector errorWithCode:DSMConnectorNoLoginError message:nil];
         }
@@ -554,20 +552,28 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 
 
 - (NSString *)baseURL {
-    return [NSString stringWithFormat:@"%s://%@:%ld/", self.secure ? "https" : "http", self.host, [self.port integerValue]];
+    return [NSString stringWithFormat:@"%s://%@:%ld/", self.secure ? "https" : "http", self.host, [self portNumber]];
+}
+
+- (NSInteger)portNumber {
+    if (self.port)
+        return [self.port integerValue];
+    
+    return self.secure ? 5001 : 5000;
 }
 
 - (BOOL)isValid {
     if (self.host == nil || self.host.length == 0
-        || self.port == nil
         || self.user == nil || self.user.length == 0
         || self.password == nil)
         return NO;
 
-    NSInteger port = [self.port integerValue];
-    
-    if (port < 0 || port > 0xffff) {
-        return NO;
+    if (self.port) {
+        NSInteger port = [self.port integerValue];
+        
+        if (port < 0 || port > 0xffff) {
+            return NO;
+        }
     }
     
     return YES;
@@ -576,7 +582,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 - (BOOL)isEqualToConnectionInfo:(DSMConnectorConnectionInfo *)info {
     return (self.secure == info.secure
             && [self.host isEqualToString:info.host]
-            && [self.port isEqualToNumber:info.port]
+            && ((self.port == nil && info.port == nil) || [self.port isEqualToNumber:info.port])
             && [self.user isEqualToString:info.user]
             && [self.password isEqualToString:info.password]);
 }
@@ -604,7 +610,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     
     int protocol = self.secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
     
-    OSStatus status = SecKeychainFindInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", (UInt16)[self.port integerValue], protocol, kSecAuthenticationTypeAny, &password_length, &c_password, NULL);
+    OSStatus status = SecKeychainFindInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", (UInt16)[self portNumber], protocol, kSecAuthenticationTypeAny, &password_length, &c_password, NULL);
     
     if (status != 0)
         return nil;
@@ -623,7 +629,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     const char *c_password = [self.password UTF8String];
     
     int protocol = self.secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
-    OSStatus status = SecKeychainAddInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", (UInt16)[self.port integerValue], protocol, kSecAuthenticationTypeDefault, (UInt32)strlen(c_password), c_password, NULL);
+    OSStatus status = SecKeychainAddInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", (UInt16)[self portNumber], protocol, kSecAuthenticationTypeDefault, (UInt32)strlen(c_password), c_password, NULL);
     
     return status == 0;
 }

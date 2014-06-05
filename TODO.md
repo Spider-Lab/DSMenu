@@ -14,13 +14,12 @@
 - don't grab focus when opening URL/file
 - use alert style notification for login failure?
 - display correct cursor in about link
-- only allow digits in port field (login window)
 
 ## test
 
-- leaks (esp. DSMConnector)
 - certificate acceptance behind firewall
-- login data & password are saved to defaults/keychain
+- first login (with no saved data)
+
 
 # later
 
@@ -40,4 +39,4 @@
 
 - sort DSMAppDelegate methods
 - improve method names (esp. with handlers)
-- login window: bind connection info port (NSNumber) to text field
+- don't send change notifications when assining to _property

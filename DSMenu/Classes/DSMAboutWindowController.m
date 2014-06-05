@@ -30,6 +30,13 @@
             return theEvent;
         };
         event_monitor = [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:handler];
+        
+        NSFont *font = self.linkField.font;
+        [self.linkField setAllowsEditingTextAttributes: YES];
+        [self.linkField setSelectable: YES];
+        NSData *html = [[NSString stringWithFormat:@"<span style=\"font-family:'%@'; font-size:%fpx;\"><a href=\"%@\">%@</a></span>", [font fontName], [font pointSize], self.linkField.stringValue, self.linkField.stringValue] dataUsingEncoding:NSUTF8StringEncoding];
+        NSAttributedString* string = [[NSAttributedString alloc] initWithHTML:html documentAttributes:nil];
+        [self.linkField setAttributedStringValue: string];
     }
     
     [super showWindow:sender];

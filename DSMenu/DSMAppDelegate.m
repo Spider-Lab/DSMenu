@@ -22,13 +22,6 @@
 {
     [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
     
-    NSFont *font = self.about_link.font;
-    [self.about_link setAllowsEditingTextAttributes: YES];
-    [self.about_link setSelectable: YES];
-    NSData *html = [[NSString stringWithFormat:@"<span style=\"font-family:'%@'; font-size:%fpx;\"><a href=\"%@\">%@</a></span>", [font fontName], [font pointSize], self.about_link.stringValue, self.about_link.stringValue] dataUsingEncoding:NSUTF8StringEncoding];
-    NSAttributedString* string = [[NSAttributedString alloc] initWithHTML:html documentAttributes:nil];
-    [self.about_link setAttributedStringValue: string];
-    
     NSStatusBar *bar = [NSStatusBar systemStatusBar];
     
     self.status_bar_item = [bar statusItemWithLength:NSSquareStatusItemLength];
