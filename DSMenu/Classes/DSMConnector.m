@@ -608,6 +608,10 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     void *c_password;
     UInt32 password_length;
     
+    if (c_host == NULL || c_user == NULL) {
+        return nil;
+    }
+    
     int protocol = self.secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
     
     OSStatus status = SecKeychainFindInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", (UInt16)[self portNumber], protocol, kSecAuthenticationTypeAny, &password_length, &c_password, NULL);
