@@ -88,6 +88,16 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 
 #pragma mark - Properties
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+
+    if ([key isEqualToString:@"stateDescription"]) {
+        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"state", @"connectionInfo"]];
+    }
+    
+    return keyPaths;
+}
+
 - (NSString *)stateDescription {
     switch (self.state) {
         case DSMConnectorOffline:
@@ -108,9 +118,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
         return;
     }
 
-    [self willChangeValueForKey:@"stateDescription"];
     _state = state;
-    [self didChangeValueForKey:@"stateDescription"];
 }
 
 

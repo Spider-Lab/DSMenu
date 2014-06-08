@@ -14,16 +14,13 @@
 @interface DSMLoginWindowController : DSMWindowController
 
 @property (retain) IBOutlet DSMConnector *connector;
-@property (retain) IBOutlet NSTextField *host_field;
-@property (retain) IBOutlet NSTextField *port_field;
-@property (retain) IBOutlet NSTextField *user_field;
-@property (retain) IBOutlet NSTextField *password_field;
-@property (retain) IBOutlet NSButton *secure_checkbox;
+@property (retain) IBOutlet NSTextField *portField;
+@property (retain) IBOutlet NSButton *secureCheckBox;
 
 @property (readonly, retain) DSMConnectorConnectionInfo *connectionInfo;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)ok:(id)sender;
 - (IBAction)secureChanged:(id)sender;
-- (IBAction)showLoginWindow:(id)sender;
+
 @end

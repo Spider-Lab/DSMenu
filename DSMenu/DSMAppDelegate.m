@@ -42,7 +42,7 @@
     [self.connector restoreLoginWithHandler:^(NSError *error) {
         if (error) {
             if ([error.domain isEqualToString:DSMConnectorErrorDomain] && (error.code == DSMConnectorNoLoginError || error.code == DSMConnectorNoPasswordError)) {
-                [self.login_window_controller showLoginWindow:self];
+                [self.login_window_controller showWindow:self];
             }
             else {
                 [self sendLoginFailureNotificationWithError:error];
@@ -216,7 +216,7 @@
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification {
     // TODO: use userInfo to store type of notification/action
     if ([notification.title isEqualToString:@"Cannot log in"]) {
-        [self.login_window_controller showLoginWindow:nil];
+        [self.login_window_controller showWindow:nil];
     }
 }
 

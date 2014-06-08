@@ -25,7 +25,7 @@
 		4B5315341924CA0600085143 /* DSMenuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5315331924CA0600085143 /* DSMenuTests.m */; };
 		4B812C96194071BE004FD60A /* SLAIntegerTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B812C95194071BE004FD60A /* SLAIntegerTransformer.m */; };
 		4B85E832193A16AD00214CB5 /* Torrent.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4B85E831193A16AD00214CB5 /* Torrent.icns */; };
-		4BBF96E7193B303900DB7D60 /* VAHHyperlinkTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBF96E6193B303900DB7D60 /* VAHHyperlinkTextField.m */; };
+		4BC98F2D1944892A0001B9BB /* SLALinkFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC98F2C1944892A0001B9BB /* SLALinkFieldView.m */; };
 		4BCA997419348D790023D906 /* DSMWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA997219348D790023D906 /* DSMWindowController.m */; };
 		4BCA997819354BCF0023D906 /* DSMAboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA997719354BCF0023D906 /* DSMAboutWindowController.m */; };
 		4BD5E7C71933E5DF0032FC86 /* Magnet.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4BD5E7C61933E5DF0032FC86 /* Magnet.icns */; };
@@ -73,8 +73,8 @@
 		4B812C94194071BE004FD60A /* SLAIntegerTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SLAIntegerTransformer.h; path = Classes/SLAIntegerTransformer.h; sourceTree = "<group>"; };
 		4B812C95194071BE004FD60A /* SLAIntegerTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SLAIntegerTransformer.m; path = Classes/SLAIntegerTransformer.m; sourceTree = "<group>"; };
 		4B85E831193A16AD00214CB5 /* Torrent.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Torrent.icns; sourceTree = "<group>"; };
-		4BBF96E5193B303900DB7D60 /* VAHHyperlinkTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAHHyperlinkTextField.h; sourceTree = "<group>"; };
-		4BBF96E6193B303900DB7D60 /* VAHHyperlinkTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAHHyperlinkTextField.m; sourceTree = "<group>"; };
+		4BC98F2B1944892A0001B9BB /* SLALinkFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SLALinkFieldView.h; path = Classes/SLALinkFieldView.h; sourceTree = "<group>"; };
+		4BC98F2C1944892A0001B9BB /* SLALinkFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SLALinkFieldView.m; path = Classes/SLALinkFieldView.m; sourceTree = "<group>"; };
 		4BCA997119348D790023D906 /* DSMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMWindowController.h; path = Classes/DSMWindowController.h; sourceTree = "<group>"; };
 		4BCA997219348D790023D906 /* DSMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMWindowController.m; path = Classes/DSMWindowController.m; sourceTree = "<group>"; };
 		4BCA997619354BCF0023D906 /* DSMAboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMAboutWindowController.h; path = Classes/DSMAboutWindowController.h; sourceTree = "<group>"; };
@@ -111,7 +111,6 @@
 				4BD5E7C61933E5DF0032FC86 /* Magnet.icns */,
 				4B85E831193A16AD00214CB5 /* Torrent.icns */,
 				4B53150F1924CA0600085143 /* DSMenu */,
-				4BBF96E4193B301400DB7D60 /* Third Party */,
 				4B53152D1924CA0600085143 /* DSMenuTests */,
 				4B5315081924CA0600085143 /* Frameworks */,
 				4B5315071924CA0600085143 /* Products */,
@@ -162,9 +161,11 @@
 				4B2C28621931EC0A00BF9974 /* DSMOpenURLWindowController.m */,
 				4BCA997119348D790023D906 /* DSMWindowController.h */,
 				4BCA997219348D790023D906 /* DSMWindowController.m */,
+				4B53151E1924CA0600085143 /* MainMenu.xib */,
 				4B812C94194071BE004FD60A /* SLAIntegerTransformer.h */,
 				4B812C95194071BE004FD60A /* SLAIntegerTransformer.m */,
-				4B53151E1924CA0600085143 /* MainMenu.xib */,
+				4BC98F2B1944892A0001B9BB /* SLALinkFieldView.h */,
+				4BC98F2C1944892A0001B9BB /* SLALinkFieldView.m */,
 				4B5315211924CA0600085143 /* Images.xcassets */,
 				4B5315101924CA0600085143 /* Supporting Files */,
 			);
@@ -200,15 +201,6 @@
 				4B5315301924CA0600085143 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		4BBF96E4193B301400DB7D60 /* Third Party */ = {
-			isa = PBXGroup;
-			children = (
-				4BBF96E5193B303900DB7D60 /* VAHHyperlinkTextField.h */,
-				4BBF96E6193B303900DB7D60 /* VAHHyperlinkTextField.m */,
-			);
-			path = "Third Party";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,7 +314,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BBF96E7193B303900DB7D60 /* VAHHyperlinkTextField.m in Sources */,
+				4BC98F2D1944892A0001B9BB /* SLALinkFieldView.m in Sources */,
 				4B0714B11927F2D1004F3128 /* DSMLoginWindowController.m in Sources */,
 				4B3C0AF4192550650076B3A1 /* DSMConnector.m in Sources */,
 				4B812C96194071BE004FD60A /* SLAIntegerTransformer.m in Sources */,

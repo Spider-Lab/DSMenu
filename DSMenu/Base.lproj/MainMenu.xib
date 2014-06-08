@@ -31,11 +31,8 @@
         <customObject id="8WO-js-v5b" customClass="DSMLoginWindowController">
             <connections>
                 <outlet property="connector" destination="ai4-p4-5VP" id="r0V-kL-5BW"/>
-                <outlet property="host_field" destination="XET-ji-aUT" id="0Yk-dM-OP3"/>
-                <outlet property="password_field" destination="rW4-OI-VPb" id="ryT-Ws-iaZ"/>
-                <outlet property="port_field" destination="Fk8-Lc-dP8" id="kT2-JW-cqv"/>
-                <outlet property="secure_checkbox" destination="bGF-aA-Xwv" id="aUM-WD-Z0c"/>
-                <outlet property="user_field" destination="SzU-Ta-xSc" id="8Vt-Ki-XN1"/>
+                <outlet property="portField" destination="Fk8-Lc-dP8" id="OT5-Nm-rtW"/>
+                <outlet property="secureCheckBox" destination="bGF-aA-Xwv" id="0EL-y7-B9Q"/>
                 <outlet property="window" destination="4Wl-sX-uI3" id="NZu-F4-zt4"/>
             </connections>
         </customObject>
@@ -734,7 +731,7 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mD6-cY-ZEx" userLabel="URL">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mD6-cY-ZEx" userLabel="URL" customClass="SLALinkFieldView">
                         <rect key="frame" x="79" y="68" width="162" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="http://spiderlab.at/dsmenu/" id="OoT-4i-uCR">
@@ -979,7 +976,7 @@ Gw
                 <menuItem title="Connect…" id="8eP-rL-AgU">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="showLoginWindow:" target="8WO-js-v5b" id="Coa-RL-DOw"/>
+                        <action selector="showWindow:" target="8WO-js-v5b" id="OpZ-oN-fLy"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="xgr-RQ-zGF"/>

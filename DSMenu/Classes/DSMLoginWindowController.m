@@ -10,12 +10,6 @@
 
 #import "DSMAppDelegate.h"
 
-@interface DSMLoginWindowController () {
-    DSMConnectorConnectionInfo *connection_info;
-}
-
-@end
-
 NSCharacterSet *nonDigits;
 
 @implementation DSMLoginWindowController
@@ -33,7 +27,7 @@ NSCharacterSet *nonDigits;
 
 
 - (void)ok:(id)sender {
-    //self.connectionInfo.port = [NSNumber numberWithInteger:[self.port_field.stringValue integerValue]];
+    [self.window makeFirstResponder:nil];
     [self.connector connectTo:self.connectionInfo
                           handler:^(NSError *error) {
                               if (error) {
@@ -48,31 +42,30 @@ NSCharacterSet *nonDigits;
 }
 
 
-- (void)showLoginWindow:(id)sender {
+- (void)showWindow:(id)sender {
     [self willChangeValueForKey:@"connectionInfo"];
     _connectionInfo = [[DSMConnectorConnectionInfo alloc] initWithInfo:self.connector.connectionInfo];
     [self didChangeValueForKey:@"connectionInfo"];
-    //self.port_field.stringValue = [self.connectionInfo.port stringValue];
     [self secureChanged:nil];
     
     [super showWindow:sender];
 }
 
 - (void)secureChanged:(id)sender {
-    NSString *placeholder = self.secure_checkbox.state == NSOnState ? @"5001" : @"5000";
-    [self.port_field.cell setPlaceholderString:placeholder];
+    NSString *placeholder = self.secureCheckBox.state == NSOnState ? @"5001" : @"5000";
+    [self.portField.cell setPlaceholderString:placeholder];
 }
 
 
 - (void)controlTextDidChange:(NSNotification *)notification {
-    if (notification.object != self.port_field)
+    if (notification.object != self.portField)
         return;
     
-    NSString *newText = [self.port_field stringValue];
+    NSString *newText = [self.portField stringValue];
     NSString *newDigits = [[newText componentsSeparatedByCharactersInSet:nonDigits] componentsJoinedByString:@""];
     
     if (![newDigits isEqualToString:newText]) {
-        [self.port_field setStringValue:newDigits];
+        [self.portField setStringValue:newDigits];
     }
 }
 
