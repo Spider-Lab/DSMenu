@@ -24,7 +24,6 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <customObject id="lt1-wo-WCB" userLabel="About Window Controller" customClass="DSMAboutWindowController">
             <connections>
-                <outlet property="linkField" destination="mD6-cY-ZEx" id="vp2-7x-2eo"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="nDn-9r-oj4"/>
             </connections>
         </customObject>
@@ -725,7 +724,7 @@
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nzu-5f-Emg" userLabel=" Version">
                         <rect key="frame" x="18" y="134" width="284" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Version 1.0" id="k0c-9W-JcG">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Version 1.0.1" id="k0c-9W-JcG">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -999,6 +998,12 @@ Gw
                         <action selector="showWindow:" target="lt1-wo-WCB" id="Hz0-Sw-LEo"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Check for Updates…" id="Kxp-pm-epM">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="checkForUpdates:" target="txR-D8-q3B" id="4Lm-sf-Hu3"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Quit DSMenu" id="Dqq-C6-gRt">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -1081,6 +1086,7 @@ Gw
                 </constraints>
             </view>
         </window>
+        <customObject id="txR-D8-q3B" customClass="SUUpdater"/>
     </objects>
     <resources>
         <image name="DSMenu" width="512" height="512"/>

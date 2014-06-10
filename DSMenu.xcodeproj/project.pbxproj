@@ -26,6 +26,8 @@
 		4B812C96194071BE004FD60A /* SLAIntegerTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B812C95194071BE004FD60A /* SLAIntegerTransformer.m */; };
 		4B85E832193A16AD00214CB5 /* Torrent.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4B85E831193A16AD00214CB5 /* Torrent.icns */; };
 		4BC98F2D1944892A0001B9BB /* SLALinkFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC98F2C1944892A0001B9BB /* SLALinkFieldView.m */; };
+		4BC9A28219474316006C3B44 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BC9A28119474316006C3B44 /* Sparkle.framework */; };
+		4BC9A284194746B6006C3B44 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4BC9A28119474316006C3B44 /* Sparkle.framework */; };
 		4BCA997419348D790023D906 /* DSMWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA997219348D790023D906 /* DSMWindowController.m */; };
 		4BCA997819354BCF0023D906 /* DSMAboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA997719354BCF0023D906 /* DSMAboutWindowController.m */; };
 		4BD5E7C71933E5DF0032FC86 /* Magnet.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4BD5E7C61933E5DF0032FC86 /* Magnet.icns */; };
@@ -40,6 +42,19 @@
 			remoteInfo = DSMenu;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4BC9A283194746A6006C3B44 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4BC9A284194746B6006C3B44 /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4B03D2FF1926227F001293B9 /* DSMenu.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = DSMenu.icns; sourceTree = "<group>"; };
@@ -75,6 +90,7 @@
 		4B85E831193A16AD00214CB5 /* Torrent.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Torrent.icns; sourceTree = "<group>"; };
 		4BC98F2B1944892A0001B9BB /* SLALinkFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SLALinkFieldView.h; path = Classes/SLALinkFieldView.h; sourceTree = "<group>"; };
 		4BC98F2C1944892A0001B9BB /* SLALinkFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SLALinkFieldView.m; path = Classes/SLALinkFieldView.m; sourceTree = "<group>"; };
+		4BC9A28119474316006C3B44 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		4BCA997119348D790023D906 /* DSMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMWindowController.h; path = Classes/DSMWindowController.h; sourceTree = "<group>"; };
 		4BCA997219348D790023D906 /* DSMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSMWindowController.m; path = Classes/DSMWindowController.m; sourceTree = "<group>"; };
 		4BCA997619354BCF0023D906 /* DSMAboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSMAboutWindowController.h; path = Classes/DSMAboutWindowController.h; sourceTree = "<group>"; };
@@ -88,6 +104,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B53150A1924CA0600085143 /* Cocoa.framework in Frameworks */,
+				4BC9A28219474316006C3B44 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +146,7 @@
 		4B5315081924CA0600085143 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4BC9A28119474316006C3B44 /* Sparkle.framework */,
 				4B5315091924CA0600085143 /* Cocoa.framework */,
 				4B5315281924CA0600085143 /* XCTest.framework */,
 				4B53150B1924CA0600085143 /* Other Frameworks */,
@@ -213,6 +231,7 @@
 				4B5315021924CA0600085143 /* Sources */,
 				4B5315031924CA0600085143 /* Frameworks */,
 				4B5315041924CA0600085143 /* Resources */,
+				4BC9A283194746A6006C3B44 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -255,7 +274,7 @@
 						DevelopmentTeam = F27CVJNWXK;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -454,9 +473,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = DSMenu/DSMenu.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DSMenu/DSMenu-Prefix.pch";
 				INFOPLIST_FILE = "DSMenu/DSMenu-Info.plist";
@@ -469,9 +491,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = DSMenu/DSMenu.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DSMenu/DSMenu-Prefix.pch";
 				INFOPLIST_FILE = "DSMenu/DSMenu-Info.plist";

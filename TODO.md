@@ -4,15 +4,28 @@
 
 ## bugs
 
+## test
+
+
 
 # important
 
 ## features
 
+- localization
+- find Synologies on same network automatically
+- help and feedback address     
+
+
 ## bugs
 
 - don't grab focus when opening URL/file
 - use alert style notification for login failure?
+
+## cleanup
+
+- About window: take version numbar from Info.plist
+- About window: take copyright year from build date
 
 ## test
 
@@ -24,6 +37,7 @@
 - better magnet:// icon
 - reconnect menu item
 - checkbox menu item to start at login
+- AppleScript dictionary
 
 ## bugs
 
@@ -33,3 +47,4 @@
 
 - sort DSMAppDelegate methods
 - improve method names (esp. with handlers)
+- use camelCase for property names

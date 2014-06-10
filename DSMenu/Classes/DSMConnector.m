@@ -375,12 +375,9 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     switch (self.state) {
         case DSMConnectorOffline:
         case DSMConnectorLoggingOut:
-            return handler([DSMConnector errorWithCode:DSMConnectorNotConnectedError message:nil]);
-            
         case DSMConnectorLoggingIn:
         case DSMConnectorReconnecting:
-            // TODO: remember task
-            return;
+            return handler([DSMConnector errorWithCode:DSMConnectorNotConnectedError message:nil]);
             
         case DSMConnectorConnected:
             [self sendRequestToEndpoint:TASK_ENDPOINT
@@ -397,12 +394,9 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     switch (self.state) {
         case DSMConnectorOffline:
         case DSMConnectorLoggingOut:
-            return handler([DSMConnector errorWithCode:DSMConnectorNotConnectedError message:nil]);
-            
         case DSMConnectorLoggingIn:
         case DSMConnectorReconnecting:
-            // TODO: remember task
-            return;
+            return handler([DSMConnector errorWithCode:DSMConnectorNotConnectedError message:nil]);
             
         case DSMConnectorConnected:
             [self sendRequestToEndpoint:TASK_ENDPOINT
@@ -640,7 +634,12 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     const char *c_user = [self.user UTF8String];
     const char *c_password = [self.password UTF8String];
     
+    if (c_host == NULL || c_user == NULL || c_password == NULL) {
+        return errSecParam;
+    }
+    
     int protocol = self.secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
+    
     OSStatus status = SecKeychainAddInternetPassword(NULL, (UInt32)strlen(c_host), c_host, 0, NULL, (UInt32)strlen(c_user), c_user, 0, "", (UInt16)[self portNumber], protocol, kSecAuthenticationTypeDefault, (UInt32)strlen(c_password), c_password, NULL);
     
     return status == 0;

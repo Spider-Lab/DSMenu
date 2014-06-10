@@ -160,11 +160,12 @@
         return YES;
     }
 
-    NSData *data = [[NSFileManager defaultManager] contentsAtPath:filename];
-    
+    NSError *error = nil;
+    NSData *data = [NSData dataWithContentsOfFile:filename options:0 error:&error];
+   
     if (data == nil) {
-        NSLog(@"can't read file %@", filename);
-        // TODO: send error notification
+        NSLog(@"can't read file %@: %@", filename, error);
+        [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
         return NO;
     }
     

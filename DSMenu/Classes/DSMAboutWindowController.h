@@ -11,6 +11,4 @@
 
 @interface DSMAboutWindowController : DSMWindowController
 
-@property (readwrite, retain) IBOutlet NSTextField *linkField;
-
 @end
