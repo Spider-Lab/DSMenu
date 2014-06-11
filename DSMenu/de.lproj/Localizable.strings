@@ -1,0 +1,81 @@
+﻿/* %@\nClick to change connection settings. */
+"%@\nClick to change connection settings." = "%@\nZum Ändern der Logindaten anklicken.";
+
+/* Account disabled */
+"Account disabled" = "Konto gesperrt"; /* NEW */
+
+/* Can't create task */
+"Can't create task" = "Aufgabe konnte nicht angelegt werden";
+
+/* Cannot log in */
+"Cannot log in" = "Login fehlgeschlagen";
+
+/* Connect */
+"Connect" = "Verbinde";
+
+/* Connected to %@ */
+"Connected to %@" = "Mit %@ verbunden";
+
+/* Connecting… */
+"Connecting…" = "Verbindung wird hergestellt…";
+
+/* Create Task */
+"Create Task" = "Aufgabe anlegen";
+
+/* Created task */
+"Created task" = "Aufgabe angelegt";
+
+/* Disconnecting… */
+"Disconnecting…" = "Verbindung wird getrennt…";
+
+/* Guest account disabled */
+"Guest account disabled" = "Gastkonto account gesperrt"; /* NEW */
+
+/* Invalid Parameter */
+"Invalid Parameter" = "Ungültiger Parameter"; /* NEW */
+
+/* No login provided */
+"No login provided" = "Kein Login angegeben"; /* NEW */
+
+/* No password provided */
+"No password provided" = "Kein Passwort angegeben"; /* NEW */
+
+/* No such account or incorrect password */
+"No such account or incorrect password" = "Kein Konto oder ungültiges Passwort"; /* NEW */
+
+/* Not connected */
+"Not connected" = "Nicht verbunden";
+
+/* Permission denied */
+"Permission denied" = "Zugriff verweigert"; /* NEW */
+
+/* Session interrupted by duplicate login */
+"Session interrupted by duplicate login" = "Sitzung durch paralelles Einloggen unterbrochen"; /* NEW */
+
+/* Session timeout */
+"Session timeout" = "Sitzung abgelaufen"; /* NEW */
+
+/* The logged in session does not have permission */
+"The logged in session does not have permission" = "Zugriff für eingeloggte Sitzung verweigert"; /* NEW */
+
+/* The requested API does not exist */
+"The requested API does not exist" = "Die angefragte API existiert nicht"; /* NEW */
+
+/* The requested method does not exist */
+"The requested method does not exist" = "Die angefragte Methode existiert nicht"; /* NEW */
+
+/* The requested version does not support the functionality */
+"The requested version does not support the functionality" = "Funktionalität von der angefragten Version nicht unterstützt"; /* NEW */
+
+/* The server sent an invalid reply */
+"The server sent an invalid reply" = "Ungültige Antwort von Server"; /* NEW */
+
+/* Unknown error */
+"Unknown error" = "Unbekannter Fehler"; /* NEW */
+
+/* Unknown error %ld */
+"Unknown error %ld" = "Unbekannter Fehler %ld";
+
+/* Wrong password */
+"Wrong password" = "Ungültiges Passwort"; /* NEW */
+

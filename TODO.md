@@ -12,7 +12,7 @@
 
 ## features
 
-- localization
+- don't display build version in Sparkle messages
 - find Synologies on same network automatically
 - help and feedback address     
 

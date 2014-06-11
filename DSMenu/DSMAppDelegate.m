@@ -15,6 +15,8 @@
 
 @end
 
+#define DSMLoginFailureKey @"DSMLoginFailure"
+
 
 @implementation DSMAppDelegate
 
@@ -74,14 +76,14 @@
         if (error) {
             NSLog(@"can't create downlaod taks from URL %@: %@", url, error);
             
-            [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
+            [self sendNotificationWithTitle:NSLocalizedString(@"Can't create task", @"Can't create task") informativeText:[error localizedDescription]];
         }
         else {
 #if DEBUG
             NSLog(@"created download task from URL %@", url);
 #endif
             
-            [self sendNotificationWithTitle:@"Created task" informativeText:url];
+            [self sendNotificationWithTitle:NSLocalizedString(@"Created task", @"Created task") informativeText:url];
         }
     }];
 }
@@ -115,7 +117,9 @@
                 }];
                 [pendingFiles removeAllObjects];
                 [pendingURLs removeAllObjects];
+#if DEBUG
                 NSLog(@"done processing pending tasks");
+#endif
                 break; }
                 
             case DSMConnectorOffline:
@@ -134,10 +138,11 @@
 - (void)sendLoginFailureNotificationWithError:(NSError *)error {
     // TODO: click to open login window
     NSUserNotification *notification = [[NSUserNotification alloc] init];
-    notification.title= @"Cannot log in";
-    notification.informativeText = [NSString stringWithFormat:@"%@\nClick to change connection settings.", [error localizedDescription]];
+    notification.title = NSLocalizedString(@"Cannot log in", @"Cannot log in");
+    notification.informativeText = [NSString stringWithFormat:NSLocalizedString(@"%@\nClick to change connection settings.", @"%@\nClick to change connection settings."), [error localizedDescription]];
     notification.hasActionButton = YES;
-    notification.actionButtonTitle = @"Connect";
+    notification.userInfo = @{DSMLoginFailureKey: @(true) };
+    notification.actionButtonTitle = NSLocalizedString(@"Connect", @"Connect");
     
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
@@ -165,20 +170,20 @@
    
     if (data == nil) {
         NSLog(@"can't read file %@: %@", filename, error);
-        [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
+        [self sendNotificationWithTitle:NSLocalizedString(@"Can't create task", @"Can't create task") informativeText:[error localizedDescription]];
         return NO;
     }
     
     [self.connector createTaskFromFilename:[filename lastPathComponent] data:data handler:^(NSError *error) {
         if (error) {
             NSLog(@"can't create downlaod taks from file %@: %@", filename, error);
-            [self sendNotificationWithTitle:@"Can't create task" informativeText:[error localizedDescription]];
+            [self sendNotificationWithTitle:NSLocalizedString(@"Can't create task", @"Can't create task") informativeText:[error localizedDescription]];
         }
         else {
 #if DEBUG
             NSLog(@"created download task from file %@", filename);
 #endif
-            [self sendNotificationWithTitle:@"Created task" informativeText:[filename lastPathComponent]];
+            [self sendNotificationWithTitle:NSLocalizedString(@"Created task", @"Created task") informativeText:[filename lastPathComponent]];
         }
     }];
     
@@ -192,7 +197,7 @@
 - (void)openFiles:(id)sender {
     NSOpenPanel* open_panel = [NSOpenPanel openPanel];
     
-    [open_panel setPrompt:@"Create Task"];
+    [open_panel setPrompt:NSLocalizedString(@"Create Task", @"Create Task")];
     [open_panel setAllowedFileTypes:@[@"torrent"]];
     
     [open_panel beginWithCompletionHandler:^(NSInteger result) {
@@ -215,8 +220,8 @@
 }
 
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification {
-    // TODO: use userInfo to store type of notification/action
-    if ([notification.title isEqualToString:@"Cannot log in"]) {
+    NSNumber *isLoginFailure = notification.userInfo[DSMLoginFailureKey];
+    if (isLoginFailure && [isLoginFailure boolValue]) {
         [self.login_window_controller showWindow:nil];
     }
 }

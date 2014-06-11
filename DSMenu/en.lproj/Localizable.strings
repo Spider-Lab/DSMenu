@@ -1,0 +1,33 @@
+﻿/* %@\nClick to change connection settings. */
+"%@\nClick to change connection settings." = "%@\nClick to change connection settings."; /* NEW */
+
+/* Can't create task */
+"Can't create task" = "Can't create task"; /* NEW */
+
+/* Cannot log in */
+"Cannot log in" = "Cannot log in"; /* NEW */
+
+/* Connect */
+"Connect" = "Connect"; /* NEW */
+
+/* Connected to %@ */
+"Connected to %@" = "Connected to %@"; /* NEW */
+
+/* Connecting… */
+"Connecting…" = "Connecting…"; /* NEW */
+
+/* Create Task */
+"Create Task" = "Create Task"; /* NEW */
+
+/* Created task */
+"Created task" = "Created task"; /* NEW */
+
+/* Disconnecting… */
+"Disconnecting…" = "Disconnecting…"; /* NEW */
+
+/* Not connected */
+"Not connected" = "Not connected"; /* NEW */
+
+/* Unknown error %ld */
+"Unknown error %ld" = "Unknown error %ld"; /* NEW */
+

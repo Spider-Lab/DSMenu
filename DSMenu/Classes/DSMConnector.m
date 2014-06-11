@@ -51,25 +51,25 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 + (void)initialize {
     QuerySaveCharacters = [[NSCharacterSet characterSetWithCharactersInString:@":/?#[]@!$&’()*+,;="] invertedSet];
     
-    ErrorDescription = @{ @(DSMConnectorNoLoginError): @"No login provided",
-                          @(DSMConnectorNoPasswordError): @"No password provided",
-                          @(DSMConnectorNotConnectedError): @"Not connected",
-                          @(DSMConnectorInvalidReplyError): @"The server sent an invalid reply",
+    ErrorDescription = @{ @(DSMConnectorNoLoginError): NSLocalizedString(@"No login provided", @"No login provided"),
+                          @(DSMConnectorNoPasswordError): NSLocalizedString(@"No password provided", @"No password provided"),
+                          @(DSMConnectorNotConnectedError): NSLocalizedString(@"Not connected", @"Not connected"),
+                          @(DSMConnectorInvalidReplyError): NSLocalizedString(@"The server sent an invalid reply", @"The server sent an invalid reply"),
                           
-                          @(DSMConnectorUnknownError): @"Unknown error",
-                          @(DSMConnectorInvalidParameterError): @"Invalid Parameter",
-                          @(DSMConnectorUnknownAPIError): @"The requested API does not exist",
-                          @(DSMConnectorUnknownMethodError): @"The requested method does not exist",
-                          @(DSMConnectorVersionTooLowError): @"The requested version does not support the functionality",
-                          @(DSMConnectorInsuficcientPermissionError): @"The logged in session does not have permission",
-                          @(DSMConnectorSessionTimedOutError): @"Session timeout",
-                          @(DSMConnectorSessionInterruptedError): @"Session interrupted by duplicate login",
+                          @(DSMConnectorUnknownError): NSLocalizedString(@"Unknown error", @"Unknown error"),
+                          @(DSMConnectorInvalidParameterError): NSLocalizedString(@"Invalid Parameter", @"Invalid Parameter"),
+                          @(DSMConnectorUnknownAPIError): NSLocalizedString(@"The requested API does not exist", @"The requested API does not exist"),
+                          @(DSMConnectorUnknownMethodError): NSLocalizedString(@"The requested method does not exist", @"The requested method does not exist"),
+                          @(DSMConnectorVersionTooLowError): NSLocalizedString(@"The requested version does not support the functionality", @"The requested version does not support the functionality"),
+                          @(DSMConnectorInsuficcientPermissionError): NSLocalizedString(@"The logged in session does not have permission", @"The logged in session does not have permission"),
+                          @(DSMConnectorSessionTimedOutError): NSLocalizedString(@"Session timeout", @"Session timeout"),
+                          @(DSMConnectorSessionInterruptedError): NSLocalizedString(@"Session interrupted by duplicate login", @"Session interrupted by duplicate login"),
                           
-                          @(DSMConnectorIncorrectLoginError): @"No such account or incorrect password",
-                          @(DSMConnectorGuestAccountDisabledError): @"Guest account disabled",
-                          @(DSMConnectorAccountDisabledError): @"Account disabled",
-                          @(DSMConnectorWrongPasswordError): @"Wrong password",
-                          @(DSMConnectorPermissionDeniedError): @"Permission denied" };
+                          @(DSMConnectorIncorrectLoginError): NSLocalizedString(@"No such account or incorrect password", @"No such account or incorrect password"),
+                          @(DSMConnectorGuestAccountDisabledError): NSLocalizedString(@"Guest account disabled", @"Guest account disabled"),
+                          @(DSMConnectorAccountDisabledError): NSLocalizedString(@"Account disabled", @"Account disabled"),
+                          @(DSMConnectorWrongPasswordError): NSLocalizedString(@"Wrong password", @"Wrong password"),
+                          @(DSMConnectorPermissionDeniedError): NSLocalizedString(@"Permission denied", @"Permission denied") };
 }
 
 
@@ -101,14 +101,14 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 - (NSString *)stateDescription {
     switch (self.state) {
         case DSMConnectorOffline:
-            return @"Not connected";
+            return NSLocalizedString(@"Not connected", @"Not connected");
         case DSMConnectorReconnecting:
         case DSMConnectorLoggingIn:
-            return @"Connecting…";
+            return NSLocalizedString(@"Connecting…", @"Connecting…");
         case DSMConnectorLoggingOut:
-            return @"Disconnecting…";
+            return NSLocalizedString(@"Disconnecting…", @"Disconnecting…");
         case DSMConnectorConnected:
-            return [NSString stringWithFormat:@"Connected to %@", self.connectionInfo.host];
+            return [NSString stringWithFormat:NSLocalizedString(@"Connected to %@", @"Connected to %@"), self.connectionInfo.host];
     }
 }
 
@@ -415,7 +415,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
 + (NSError *)errorWithCode:(NSInteger)code message:(NSString *)message {
     NSString *description = ErrorDescription[@(code)];
     if (description == nil) {
-        description = [NSString stringWithFormat:@"Unknown error %ld", code];
+        description = [NSString stringWithFormat:NSLocalizedString(@"Unknown error %ld", @"Unknown error %ld"), code];
     }
     description = NSLocalizedString(description, description);
     if (message) {

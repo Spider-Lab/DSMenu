@@ -25,6 +25,7 @@
 		4B5315341924CA0600085143 /* DSMenuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5315331924CA0600085143 /* DSMenuTests.m */; };
 		4B812C96194071BE004FD60A /* SLAIntegerTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B812C95194071BE004FD60A /* SLAIntegerTransformer.m */; };
 		4B85E832193A16AD00214CB5 /* Torrent.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4B85E831193A16AD00214CB5 /* Torrent.icns */; };
+		4BC5E5B6194842080094FAB5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BC5E5B8194842080094FAB5 /* Localizable.strings */; };
 		4BC98F2D1944892A0001B9BB /* SLALinkFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC98F2C1944892A0001B9BB /* SLALinkFieldView.m */; };
 		4BC9A28219474316006C3B44 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BC9A28119474316006C3B44 /* Sparkle.framework */; };
 		4BC9A284194746B6006C3B44 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4BC9A28119474316006C3B44 /* Sparkle.framework */; };
@@ -88,6 +89,12 @@
 		4B812C94194071BE004FD60A /* SLAIntegerTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SLAIntegerTransformer.h; path = Classes/SLAIntegerTransformer.h; sourceTree = "<group>"; };
 		4B812C95194071BE004FD60A /* SLAIntegerTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SLAIntegerTransformer.m; path = Classes/SLAIntegerTransformer.m; sourceTree = "<group>"; };
 		4B85E831193A16AD00214CB5 /* Torrent.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Torrent.icns; sourceTree = "<group>"; };
+		4BC5E5B7194842080094FAB5 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4BC5E5BA194842C80094FAB5 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4BC5E5BB194842C80094FAB5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4BC5E5BC194842C80094FAB5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4BC5E5BE1948443F0094FAB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		4BC5E5C01948452D0094FAB5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		4BC98F2B1944892A0001B9BB /* SLALinkFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SLALinkFieldView.h; path = Classes/SLALinkFieldView.h; sourceTree = "<group>"; };
 		4BC98F2C1944892A0001B9BB /* SLALinkFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SLALinkFieldView.m; path = Classes/SLALinkFieldView.m; sourceTree = "<group>"; };
 		4BC9A28119474316006C3B44 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -173,6 +180,7 @@
 				4B53151C1924CA0600085143 /* DSMAppDelegate.m */,
 				4B3C0AF2192550650076B3A1 /* DSMConnector.h */,
 				4B3C0AF3192550650076B3A1 /* DSMConnector.m */,
+				4BC5E5B8194842080094FAB5 /* Localizable.strings */,
 				4B0714AF1927F2D1004F3128 /* DSMLoginWindowController.h */,
 				4B0714B01927F2D1004F3128 /* DSMLoginWindowController.m */,
 				4B2C28611931EC0A00BF9974 /* DSMOpenURLWindowController.h */,
@@ -290,6 +298,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = 4B5314FD1924CA0600085143;
 			productRefGroup = 4B5315071924CA0600085143 /* Products */;
@@ -311,6 +320,7 @@
 				4B5315141924CA0600085143 /* InfoPlist.strings in Resources */,
 				4B03D3001926227F001293B9 /* DSMenu.icns in Resources */,
 				4B5315221924CA0600085143 /* Images.xcassets in Resources */,
+				4BC5E5B6194842080094FAB5 /* Localizable.strings in Resources */,
 				4B53151A1924CA0600085143 /* Credits.rtf in Resources */,
 				4B85E832193A16AD00214CB5 /* Torrent.icns in Resources */,
 				4B5315201924CA0600085143 /* MainMenu.xib in Resources */,
@@ -368,6 +378,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				4B5315131924CA0600085143 /* en */,
+				4BC5E5BB194842C80094FAB5 /* de */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -384,6 +395,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				4B53151F1924CA0600085143 /* Base */,
+				4BC5E5BE1948443F0094FAB5 /* en */,
+				4BC5E5C01948452D0094FAB5 /* de */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -392,8 +405,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				4B5315311924CA0600085143 /* en */,
+				4BC5E5BC194842C80094FAB5 /* de */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		4BC5E5B8194842080094FAB5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4BC5E5B7194842080094FAB5 /* en */,
+				4BC5E5BA194842C80094FAB5 /* de */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

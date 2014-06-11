@@ -1,0 +1,78 @@
+
+/* Class = "NSMenuItem"; title = "About DSMenu"; ObjectID = "3qe-6I-Cz7"; */
+"3qe-6I-Cz7.title" = "Über DSMenu";
+
+/* Class = "NSWindow"; title = "Login"; ObjectID = "4Wl-sX-uI3"; */
+"4Wl-sX-uI3.title" = "Einloggen";
+
+/* Class = "NSMenu"; title = "Status Bar Menu"; ObjectID = "7MP-4q-QFg"; */
+"7MP-4q-QFg.title" = "Status Bar Menu";
+
+/* Class = "NSMenuItem"; title = "Connect…"; ObjectID = "8eP-rL-AgU"; */
+"8eP-rL-AgU.title" = "Verbinden…";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "8vU-YP-gsP"; */
+"8vU-YP-gsP.title" = "Abbrechen";
+
+/* Class = "NSButtonCell"; title = "Open"; ObjectID = "AH9-xm-ZsQ"; */
+"AH9-xm-ZsQ.title" = "Öffnen";
+
+/* Class = "NSTextFieldCell"; title = "Password:"; ObjectID = "AVk-Ij-KNY"; */
+"AVk-Ij-KNY.title" = "Passwort:";
+
+/* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
+"AYu-sK-qS6.title" = "Hauptmenu";
+
+/* Class = "NSMenuItem"; title = "Quit DSMenu"; ObjectID = "Dqq-C6-gRt"; */
+"Dqq-C6-gRt.title" = "DSMenu beenden";
+
+/* Class = "NSWindow"; title = "Open URL"; ObjectID = "F17-36-a35"; */
+"F17-36-a35.title" = "URL öffnen";
+
+/* Class = "NSTextFieldCell"; title = "Create Task for URL:"; ObjectID = "Geb-H3-1hC"; */
+"Geb-H3-1hC.title" = "Aufgabe für URL erstellen:";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "KSl-Qe-qUR"; */
+"KSl-Qe-qUR.title" = "Abbrechen";
+
+/* Class = "NSMenuItem"; title = "Check for Updates…"; ObjectID = "Kxp-pm-epM"; */
+"Kxp-pm-epM.title" = "Nach Updates suchen…";
+
+/* Class = "NSTextFieldCell"; title = "http://spiderlab.at/dsmenu/"; ObjectID = "OoT-4i-uCR"; */
+"OoT-4i-uCR.title" = "http://spiderlab.at/dsmenu/";
+
+/* Class = "NSTextFieldCell"; title = "Host:"; ObjectID = "SXp-L9-kw7"; */
+"SXp-L9-kw7.title" = "Rechner:";
+
+/* Class = "NSTextFieldCell"; title = "DSMenu"; ObjectID = "V4F-Qc-xss"; */
+"V4F-Qc-xss.title" = "DSMenu";
+
+/* Class = "NSTextFieldCell"; placeholderString = "5001"; ObjectID = "WCL-81-j6t"; */
+"WCL-81-j6t.placeholderString" = "5001";
+
+/* Class = "NSButtonCell"; title = "Use HTTPS"; ObjectID = "XXt-dU-HsB"; */
+"XXt-dU-HsB.title" = "HTTPS verwenden";
+
+/* Class = "NSMenuItem"; title = "Not connected"; ObjectID = "Zf0-NV-3aC"; */
+"Zf0-NV-3aC.title" = "Nicht verbunden";
+
+/* Class = "NSMenuItem"; title = "Open File…"; ObjectID = "ae3-RO-Hbj"; */
+"ae3-RO-Hbj.title" = "Datei öffnen…";
+
+/* Class = "NSTextFieldCell"; title = "© 2014 Spider Lab.\nAll Rights Reserved."; ObjectID = "dje-wi-ucC"; */
+"dje-wi-ucC.title" = "© 2014 Spider Lab.\nAlle Rechte vorbehalten.";
+
+/* Class = "NSTextFieldCell"; title = "User:"; ObjectID = "gFE-OK-eZf"; */
+"gFE-OK-eZf.title" = "Benutzer:";
+
+/* Class = "NSTextFieldCell"; title = "Version 1.0.1"; ObjectID = "k0c-9W-JcG"; */
+"k0c-9W-JcG.title" = "Version 1.0.1";
+
+/* Class = "NSButtonCell"; title = "OK"; ObjectID = "pxf-Jz-z8L"; */
+"pxf-Jz-z8L.title" = "OK";
+
+/* Class = "NSTextFieldCell"; title = "Port:"; ObjectID = "srZ-DC-uJB"; */
+"srZ-DC-uJB.title" = "Port:";
+
+/* Class = "NSMenuItem"; title = "Open URL…"; ObjectID = "yjW-8t-Yfh"; */
+"yjW-8t-Yfh.title" = "URL öffnen…";
