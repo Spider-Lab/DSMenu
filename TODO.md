@@ -24,8 +24,6 @@
 
 ## cleanup
 
-- About window: take version numbar from Info.plist
-- About window: take copyright year from build date
 
 ## test
 
@@ -37,6 +35,7 @@
 - better magnet:// icon
 - reconnect menu item
 - checkbox menu item to start at login
+- sparkle preferences
 - AppleScript dictionary
 
 ## bugs
@@ -48,3 +47,14 @@
 - sort DSMAppDelegate methods
 - improve method names (esp. with handlers)
 - use camelCase for property names
+
+
+# update checklist
+
+- update version number in Info.plist (2x)
+- update copyright year in Info.plist
+- archive, distribute, zip
+- add entry to sparklecast.xml
+- upload
+- announce (MacUpdate) (change developer url to http://spiderlab.at/dsmenu/)
+

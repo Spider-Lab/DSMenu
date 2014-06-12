@@ -24,6 +24,9 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <customObject id="lt1-wo-WCB" userLabel="About Window Controller" customClass="DSMAboutWindowController">
             <connections>
+                <outlet property="copyrightField" destination="srA-dh-67k" id="Ycw-v5-YBN"/>
+                <outlet property="nameField" destination="1AR-3l-LMf" id="70c-HH-rVz"/>
+                <outlet property="versionField" destination="Nzu-5f-Emg" id="Bn2-uh-gOd"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="nDn-9r-oj4"/>
             </connections>
         </customObject>

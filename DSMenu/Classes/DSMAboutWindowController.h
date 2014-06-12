@@ -11,4 +11,8 @@
 
 @interface DSMAboutWindowController : DSMWindowController
 
+@property (readwrite, retain) IBOutlet NSTextField *nameField;
+@property (readwrite, retain) IBOutlet NSTextField *versionField;
+@property (readwrite, retain) IBOutlet NSTextField *copyrightField;
+
 @end

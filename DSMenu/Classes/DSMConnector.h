@@ -28,7 +28,7 @@ enum {
     DSMConnectorInvalidParameterError = 101,
     DSMConnectorUnknownAPIError = 102,
     DSMConnectorUnknownMethodError = 103,
-    DSMConnectorVersionTooLowError = 104, // TODO: improve wording
+    DSMConnectorVersionTooLowError = 104,
     DSMConnectorInsuficcientPermissionError = 105,
     DSMConnectorSessionTimedOutError = 106,
     DSMConnectorSessionInterruptedError = 107,

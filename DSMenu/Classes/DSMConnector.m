@@ -417,9 +417,8 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     if (description == nil) {
         description = [NSString stringWithFormat:NSLocalizedString(@"Unknown error %ld", @"Unknown error %ld"), code];
     }
-    description = NSLocalizedString(description, description);
     if (message) {
-        description = [description stringByAppendingFormat:@": %@", NSLocalizedString(message, message)];
+        description = [description stringByAppendingFormat:@": %@", message];
     }
     return [NSError errorWithDomain:DSMConnectorErrorDomain code:code userInfo:@{ NSLocalizedDescriptionKey: description }];
 }

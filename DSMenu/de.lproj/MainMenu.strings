@@ -44,9 +44,6 @@
 /* Class = "NSTextFieldCell"; title = "Host:"; ObjectID = "SXp-L9-kw7"; */
 "SXp-L9-kw7.title" = "Rechner:";
 
-/* Class = "NSTextFieldCell"; title = "DSMenu"; ObjectID = "V4F-Qc-xss"; */
-"V4F-Qc-xss.title" = "DSMenu";
-
 /* Class = "NSTextFieldCell"; placeholderString = "5001"; ObjectID = "WCL-81-j6t"; */
 "WCL-81-j6t.placeholderString" = "5001";
 
@@ -59,14 +56,8 @@
 /* Class = "NSMenuItem"; title = "Open File…"; ObjectID = "ae3-RO-Hbj"; */
 "ae3-RO-Hbj.title" = "Datei öffnen…";
 
-/* Class = "NSTextFieldCell"; title = "© 2014 Spider Lab.\nAll Rights Reserved."; ObjectID = "dje-wi-ucC"; */
-"dje-wi-ucC.title" = "© 2014 Spider Lab.\nAlle Rechte vorbehalten.";
-
 /* Class = "NSTextFieldCell"; title = "User:"; ObjectID = "gFE-OK-eZf"; */
 "gFE-OK-eZf.title" = "Benutzer:";
-
-/* Class = "NSTextFieldCell"; title = "Version 1.0.1"; ObjectID = "k0c-9W-JcG"; */
-"k0c-9W-JcG.title" = "Version 1.0.1";
 
 /* Class = "NSButtonCell"; title = "OK"; ObjectID = "pxf-Jz-z8L"; */
 "pxf-Jz-z8L.title" = "OK";

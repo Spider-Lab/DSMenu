@@ -136,7 +136,6 @@
 }
 
 - (void)sendLoginFailureNotificationWithError:(NSError *)error {
-    // TODO: click to open login window
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.title = NSLocalizedString(@"Cannot log in", @"Cannot log in");
     notification.informativeText = [NSString stringWithFormat:NSLocalizedString(@"%@\nClick to change connection settings.", @"%@\nClick to change connection settings."), [error localizedDescription]];

@@ -30,8 +30,13 @@
             return theEvent;
         };
         event_monitor = [NSEvent addLocalMonitorForEventsMatchingMask:NSKeyDownMask handler:handler];
-        
     }
+    
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    
+    self.nameField.stringValue = [mainBundle objectForInfoDictionaryKey:@"CFBundleName"];
+    self.versionField.stringValue = [NSString stringWithFormat:NSLocalizedString(@"Version %@", @"Version %@"), [mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+    self.copyrightField.stringValue = [[mainBundle objectForInfoDictionaryKey:@"NSHumanReadableCopyright"] stringByReplacingOccurrencesOfString:@". " withString:@".\n"];;
     
     [super showWindow:sender];
 }
