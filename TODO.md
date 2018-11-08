@@ -12,6 +12,8 @@
 
 ## features
 
+- 2FA support
+- dark mode support
 - don't display build version in Sparkle messages
 - find Synologies on same network automatically
 - help and feedback address     
@@ -19,6 +21,7 @@
 
 ## bugs
 
+- fix quoting of special characters in API parameters (esp. passwords)
 - don't grab focus when opening URL/file
 - use alert style notification for login failure?
 
