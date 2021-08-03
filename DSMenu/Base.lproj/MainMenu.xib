@@ -347,12 +347,6 @@ Gw
                         <action selector="showWindow:" target="lt1-wo-WCB" id="Hz0-Sw-LEo"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Check for Updates…" id="Kxp-pm-epM">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="checkForUpdates:" target="txR-D8-q3B" id="4Lm-sf-Hu3"/>
-                    </connections>
-                </menuItem>
                 <menuItem title="Quit DSMenu" id="Dqq-C6-gRt">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -360,6 +354,7 @@ Gw
                     </connections>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="4" y="437"/>
         </menu>
         <userDefaultsController representsSharedInstance="YES" id="7SL-eb-ulO"/>
         <window title="Open URL" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F17-36-a35">

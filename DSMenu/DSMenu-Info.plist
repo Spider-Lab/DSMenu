@@ -74,8 +74,6 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>SUFeedURL</key>
-	<string>http://spiderlab.at/dsmenu/sparklecast.xml</string>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>
