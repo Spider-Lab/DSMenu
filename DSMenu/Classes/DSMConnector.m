@@ -1,6 +1,6 @@
 /*
   DSMConnector.m -- implements Download Station API
-  Copyright (C) 2014 Dieter Baron
+  Copyright (C) 2014, 2021 Dieter Baron
  
   This file is part of DSMenu, a utility for Synology Download Station.
   The authors can be contacted at <dsmenu@spiderlab.at>
@@ -176,7 +176,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
             // ignore logout errors
             
             [self willChangeValueForKey:@"connectionInfo"];
-            _connectionInfo = info;
+            self->_connectionInfo = info;
             [self didChangeValueForKey:@"connectionInfo"];
 
             [self loginHandler:handler];
@@ -366,7 +366,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
                       NSLog(@"Can't log in: %@", error);
                   }
                   else {
-                      session_id = result[@"data"][@"sid"];
+                      self->session_id = result[@"data"][@"sid"];
 #if DEBUG
                       NSLog(@"logged in");
 #endif
@@ -659,7 +659,7 @@ static NSCharacterSet *QuerySaveCharacters = NULL;
     const char *c_password = [self.password UTF8String];
     
     if (c_host == NULL || c_user == NULL || c_password == NULL) {
-        return errSecParam;
+        return true;
     }
     
     int protocol = self.secure ? kSecProtocolTypeHTTPS : kSecProtocolTypeHTTP;
